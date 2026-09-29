@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<title>Boss POS - บริหารสินค้าและยอดขายรายวัน</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="topbar"><h1>Boss POS</h1><span id="clock" class="muted"></span></header>
+
+<main>
+  <!-- สรุปยอดขายรายวัน -->
+  <section id="view-dashboard" class="view active">
+    <div class="datebar">
+      <button class="btn ghost" id="d-prev" aria-label="วันก่อนหน้า">‹</button>
+      <input type="date" id="d-date">
+      <button class="btn ghost" id="d-next" aria-label="วันถัดไป">›</button>
+      <button class="btn small" id="d-today">วันนี้</button>
+    </div>
+    <div class="kpis" id="kpis"></div>
+    <div class="card"><h2>ยอดขายรายชั่วโมง</h2><div id="hourly" class="bars"></div></div>
+    <div class="card"><h2>ยอดขาย 7 วันล่าสุด</h2><div id="week" class="bars"></div></div>
+    <div class="card"><h2>สินค้าขายดี</h2><div id="top"></div></div>
+    <div class="card"><h2>รายการบิล</h2><div id="bills"></div></div>
+    <div class="card" id="lowcard"><h2>สินค้าใกล้หมด</h2><div id="low"></div></div>
+  </section>
+
+  <!-- ขายสินค้า -->
+  <section id="view-sell" class="view">
+    <input type="search" id="s-search" placeholder="ค้นหาชื่อ / รหัสสินค้า" autocomplete="off">
+    <div id="s-list" class="grid"></div>
+    <div class="card cart" id="cart"></div>
+  </section>
+
+  <!-- สินค้า -->
+  <section id="view-products" class="view">
+    <div class="row">
+      <input type="search" id="p-search" placeholder="ค้นหาสินค้า" autocomplete="off">
+      <select id="p-cat"></select>
+      <button class="btn primary" id="p-add">+ เพิ่ม</button>
+    </div>
+    <div id="p-list"></div>
+  </section>
+
+  <!-- ตั้งค่า -->
+  <section id="view-settings" class="view">
+    <div class="card">
+      <h2>ข้อมูล</h2>
+      <p class="muted">ข้อมูลเก็บในเบราว์เซอร์ของเครื่องนี้ (localStorage) ควรสำรองไฟล์เป็นระยะ</p>
+      <div class="stack">
+        <button class="btn" id="x-json">สำรองข้อมูล (JSON)</button>
+        <label class="btn" for="x-import">นำเข้าข้อมูล (JSON)</label>
+        <input type="file" id="x-import" accept="application/json" hidden>
+        <button class="btn" id="x-csv-sales">ส่งออกยอดขาย (CSV)</button>
+        <button class="btn" id="x-csv-prod">ส่งออกสินค้า (CSV)</button>
+        <button class="btn danger" id="x-reset">ล้างข้อมูลและโหลดตัวอย่าง</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<nav class="tabs" id="tabs">
+  <button data-view="dashboard" class="on">ยอดขาย</button>
+  <button data-view="sell">ขาย</button>
+  <button data-view="products">สินค้า</button>
+  <button data-view="settings">ตั้งค่า</button>
+</nav>
+
+<dialog id="dlg">
+  <form method="dialog" id="pf">
+    <h2 id="pf-title">สินค้า</h2>
+    <label>รหัสสินค้า (SKU)<input name="sku" required maxlength="30"></label>
+    <label>ชื่อสินค้า<input name="name" required maxlength="100"></label>
+    <label>หมวดหมู่<input name="category" maxlength="40" list="cats"></label>
+    <datalist id="cats"></datalist>
+    <div class="row">
+      <label>ราคาขาย<input name="price" type="number" min="0" step="0.01" inputmode="decimal" required></label>
+      <label>ต้นทุน<input name="cost" type="number" min="0" step="0.01" inputmode="decimal" required></label>
+    </div>
+    <div class="row">
+      <label>สต็อก<input name="stock" type="number" min="0" step="1" inputmode="numeric" required></label>
+      <label>จุดสั่งซื้อ<input name="min" type="number" min="0" step="1" inputmode="numeric" required></label>
+    </div>
+    <p class="err" id="pf-err"></p>
+    <div class="row end">
+      <button type="button" class="btn" id="pf-cancel">ยกเลิก</button>
+      <button type="submit" class="btn primary" id="pf-save">บันทึก</button>
+    </div>
+  </form>
+</dialog>
+
+<div id="toast" role="status" aria-live="polite"></div>
+<script src="js/store.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

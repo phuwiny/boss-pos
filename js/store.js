@@ -1,0 +1,210 @@
+/* ชั้นข้อมูลและตรรกะธุรกิจ (ไม่ผูกกับ DOM) เก็บข้อมูลใน localStorage */
+(function (root) {
+  'use strict';
+  var KEY = 'bosspos.v1';
+  var state = { products: [], sales: [], seq: 1 };
+  var mem = null; // fallback เมื่อ localStorage ใช้ไม่ได้
+
+  function uid(p) { return p + (state.seq++).toString(36) + Date.now().toString(36); }
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function dateKey(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+  function parseKey(k) { var p = k.split('-'); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  function addDays(k, n) { var d = parseKey(k); d.setDate(d.getDate() + n); return dateKey(d); }
+  function round2(n) { return Math.round(n * 100) / 100; }
+
+  function save() {
+    var s = JSON.stringify(state);
+    try { localStorage.setItem(KEY, s); } catch (e) { mem = s; }
+  }
+  function load() {
+    var s = null;
+    try { s = localStorage.getItem(KEY); } catch (e) { s = mem; }
+    if (s) {
+      try {
+        var o = JSON.parse(s);
+        if (o && Array.isArray(o.products) && Array.isArray(o.sales)) {
+          state = { products: o.products, sales: o.sales, seq: o.seq || 1 };
+          return false;
+        }
+      } catch (e) { /* ข้อมูลเสีย -> seed ใหม่ */ }
+    }
+    seed();
+    return true;
+  }
+
+  function seed() {
+    state = { products: [], sales: [], seq: 1 };
+    var demo = [
+      ['DR001', 'น้ำดื่ม 600 มล.', 'เครื่องดื่ม', 7, 4, 120, 30],
+      ['DR002', 'กาแฟกระป๋อง', 'เครื่องดื่ม', 15, 9, 60, 20],
+      ['DR003', 'ชาเขียวพร้อมดื่ม', 'เครื่องดื่ม', 20, 12, 8, 15],
+      ['SN001', 'มันฝรั่งทอดกรอบ', 'ขนม', 25, 16, 45, 15],
+      ['SN002', 'ช็อกโกแลตแท่ง', 'ขนม', 18, 11, 30, 10],
+      ['FD001', 'ข้าวกล่องไก่กระเทียม', 'อาหาร', 45, 28, 25, 10],
+      ['FD002', 'บะหมี่กึ่งสำเร็จรูป', 'อาหาร', 8, 5, 90, 30],
+      ['HH001', 'สบู่เหลว 450 มล.', 'ของใช้', 79, 52, 18, 8],
+      ['HH002', 'ผงซักฟอก 1 กก.', 'ของใช้', 95, 68, 0, 6],
+      ['HH003', 'กระดาษทิชชู่ 6 ม้วน', 'ของใช้', 55, 38, 40, 12]
+    ];
+    demo.forEach(function (r) {
+      state.products.push({ id: uid('p'), sku: r[0], name: r[1], category: r[2], price: r[3], cost: r[4], stock: r[5], min: r[6] });
+    });
+    // ยอดขายย้อนหลัง 6 วัน + วันนี้ (ค่าคงที่ เพื่อให้ผลซ้ำได้)
+    var today = dateKey(new Date()), n = 0;
+    for (var back = 6; back >= 0; back--) {
+      var day = parseKey(addDays(today, -back));
+      var bills = back === 0 ? 5 : 8 + (back * 3) % 7;
+      for (var b = 0; b < bills; b++) {
+        n++;
+        var items = [], cnt = 1 + n % 3;
+        for (var i = 0; i < cnt; i++) {
+          var p = state.products[(n * 3 + i * 5) % state.products.length];
+          items.push({ pid: p.id, name: p.name, qty: 1 + (n + i) % 3, price: p.price, cost: p.cost });
+        }
+        var t = new Date(day.getFullYear(), day.getMonth(), day.getDate(), 8 + (n * 2) % 12, (n * 7) % 60);
+        if (back === 0 && t > new Date()) t = new Date(Date.now() - (6 - b) * 600000);
+        state.sales.push(makeSale(items, t));
+      }
+    }
+    save();
+  }
+
+  function makeSale(items, when) {
+    var total = 0;
+    items.forEach(function (i) { total += i.qty * i.price; });
+    return { id: uid('s'), ts: when.toISOString(), date: dateKey(when), items: items, total: round2(total), voided: false };
+  }
+
+  /* ---------- สินค้า ---------- */
+  function validate(p, ignoreId) {
+    if (!p.sku || !p.name) return 'กรุณากรอกรหัสและชื่อสินค้า';
+    if (!(p.price >= 0) || !(p.cost >= 0)) return 'ราคาและต้นทุนต้องไม่ติดลบ';
+    if (!(p.stock >= 0) || !(p.min >= 0) || p.stock % 1 || p.min % 1) return 'สต็อกและจุดสั่งซื้อต้องเป็นจำนวนเต็มไม่ติดลบ';
+    var dup = state.products.some(function (x) { return x.id !== ignoreId && x.sku.toLowerCase() === p.sku.toLowerCase(); });
+    return dup ? 'รหัสสินค้านี้มีอยู่แล้ว' : '';
+  }
+  function clean(p) {
+    return { sku: String(p.sku || '').trim(), name: String(p.name || '').trim(), category: String(p.category || '').trim() || 'ทั่วไป',
+      price: Number(p.price), cost: Number(p.cost), stock: Number(p.stock), min: Number(p.min) };
+  }
+  function saveProduct(input, id) {
+    var p = clean(input), err = validate(p, id);
+    if (err) return { ok: false, error: err };
+    if (id) {
+      var cur = find(id);
+      if (!cur) return { ok: false, error: 'ไม่พบสินค้า' };
+      Object.keys(p).forEach(function (k) { cur[k] = p[k]; });
+    } else { p.id = uid('p'); state.products.push(p); }
+    save();
+    return { ok: true };
+  }
+  function find(id) { return state.products.filter(function (p) { return p.id === id; })[0]; }
+  function deleteProduct(id) {
+    state.products = state.products.filter(function (p) { return p.id !== id; });
+    save();
+  }
+
+  /* ---------- ขาย ---------- */
+  // cart: [{pid, qty}]
+  function checkout(cart, when) {
+    if (!cart.length) return { ok: false, error: 'ตะกร้าว่าง' };
+    var items = [];
+    for (var i = 0; i < cart.length; i++) {
+      var p = find(cart[i].pid), q = cart[i].qty;
+      if (!p) return { ok: false, error: 'ไม่พบสินค้าในระบบ' };
+      if (!(q >= 1) || q % 1) return { ok: false, error: 'จำนวนไม่ถูกต้อง: ' + p.name };
+      if (q > p.stock) return { ok: false, error: 'สต็อกไม่พอ: ' + p.name + ' (เหลือ ' + p.stock + ')' };
+      items.push({ pid: p.id, name: p.name, qty: q, price: p.price, cost: p.cost });
+    }
+    items.forEach(function (it) { find(it.pid).stock -= it.qty; });
+    var s = makeSale(items, when || new Date());
+    state.sales.push(s);
+    save();
+    return { ok: true, sale: s };
+  }
+  function voidSale(id) {
+    var s = state.sales.filter(function (x) { return x.id === id; })[0];
+    if (!s || s.voided) return false;
+    s.voided = true;
+    s.items.forEach(function (it) { var p = find(it.pid); if (p) p.stock += it.qty; });
+    save();
+    return true;
+  }
+
+  /* ---------- รายงาน ---------- */
+  function salesOn(k) { return state.sales.filter(function (s) { return s.date === k && !s.voided; }); }
+  function summary(k) {
+    var r = { revenue: 0, bills: 0, units: 0, profit: 0 };
+    salesOn(k).forEach(function (s) {
+      r.bills++;
+      s.items.forEach(function (i) { r.units += i.qty; r.revenue += i.qty * i.price; r.profit += i.qty * (i.price - i.cost); });
+    });
+    r.revenue = round2(r.revenue); r.profit = round2(r.profit);
+    r.avg = r.bills ? round2(r.revenue / r.bills) : 0;
+    return r;
+  }
+  function hourly(k) {
+    var h = []; for (var i = 0; i < 24; i++) h.push(0);
+    salesOn(k).forEach(function (s) { h[new Date(s.ts).getHours()] += s.total; });
+    return h.map(round2);
+  }
+  function lastDays(k, n) {
+    var out = [];
+    for (var i = n - 1; i >= 0; i--) { var d = addDays(k, -i); out.push({ date: d, revenue: summary(d).revenue }); }
+    return out;
+  }
+  function top(k, limit) {
+    var m = {};
+    salesOn(k).forEach(function (s) { s.items.forEach(function (i) {
+      var e = m[i.pid] || (m[i.pid] = { name: i.name, qty: 0, revenue: 0 });
+      e.qty += i.qty; e.revenue += i.qty * i.price;
+    }); });
+    return Object.keys(m).map(function (x) { return m[x]; })
+      .sort(function (a, b) { return b.revenue - a.revenue; }).slice(0, limit || 5);
+  }
+  function lowStock() {
+    return state.products.filter(function (p) { return p.stock <= p.min; })
+      .sort(function (a, b) { return a.stock - b.stock; });
+  }
+
+  /* ---------- นำเข้า/ส่งออก ---------- */
+  function exportJSON() { return JSON.stringify(state, null, 2); }
+  function importJSON(text) {
+    var o;
+    try { o = JSON.parse(text); } catch (e) { return { ok: false, error: 'ไฟล์ไม่ใช่ JSON ที่ถูกต้อง' }; }
+    if (!o || !Array.isArray(o.products) || !Array.isArray(o.sales)) return { ok: false, error: 'รูปแบบข้อมูลไม่ถูกต้อง' };
+    state = { products: o.products, sales: o.sales, seq: o.seq || 1 };
+    save();
+    return { ok: true };
+  }
+  function csvCell(v) {
+    v = String(v);
+    if (/^[=+\-@]/.test(v)) v = "'" + v; // กัน CSV/formula injection
+    return '"' + v.replace(/"/g, '""') + '"';
+  }
+  function csv(rows) { return '﻿' + rows.map(function (r) { return r.map(csvCell).join(','); }).join('\r\n'); }
+  function salesCSV() {
+    var rows = [['วันที่', 'เวลา', 'เลขบิล', 'สินค้า', 'จำนวน', 'ราคา', 'รวม', 'สถานะ']];
+    state.sales.forEach(function (s) {
+      var d = new Date(s.ts);
+      s.items.forEach(function (i) {
+        rows.push([s.date, pad(d.getHours()) + ':' + pad(d.getMinutes()), s.id, i.name, i.qty, i.price, i.qty * i.price, s.voided ? 'ยกเลิก' : 'ปกติ']);
+      });
+    });
+    return csv(rows);
+  }
+  function productsCSV() {
+    var rows = [['SKU', 'ชื่อ', 'หมวดหมู่', 'ราคาขาย', 'ต้นทุน', 'สต็อก', 'จุดสั่งซื้อ']];
+    state.products.forEach(function (p) { rows.push([p.sku, p.name, p.category, p.price, p.cost, p.stock, p.min]); });
+    return csv(rows);
+  }
+
+  root.Store = {
+    load: load, seed: seed, dateKey: dateKey, addDays: addDays,
+    products: function () { return state.products; }, sales: function () { return state.sales; }, find: find,
+    saveProduct: saveProduct, deleteProduct: deleteProduct, checkout: checkout, voidSale: voidSale,
+    salesOn: salesOn, summary: summary, hourly: hourly, lastDays: lastDays, top: top, lowStock: lowStock,
+    exportJSON: exportJSON, importJSON: importJSON, salesCSV: salesCSV, productsCSV: productsCSV
+  };
+  if (typeof module !== 'undefined') module.exports = root.Store;
+})(typeof window !== 'undefined' ? window : globalThis);
