@@ -1,0 +1,1834 @@
+{
+ "products": [
+  {
+   "id": "p1muu4d47y",
+   "sku": "DR001",
+   "name": "น้ำดื่ม 600 มล.",
+   "category": "เครื่องดื่ม",
+   "price": 7,
+   "cost": 4,
+   "stock": 118,
+   "min": 30
+  },
+  {
+   "id": "p2muu4d47y",
+   "sku": "DR002",
+   "name": "กาแฟกระป๋อง",
+   "category": "เครื่องดื่ม",
+   "price": 15,
+   "cost": 9,
+   "stock": 60,
+   "min": 20
+  },
+  {
+   "id": "p3muu4d47y",
+   "sku": "DR003",
+   "name": "ชาเขียวพร้อมดื่ม",
+   "category": "เครื่องดื่ม",
+   "price": 20,
+   "cost": 12,
+   "stock": 8,
+   "min": 15
+  },
+  {
+   "id": "p4muu4d47y",
+   "sku": "SN001",
+   "name": "มันฝรั่งทอดกรอบ",
+   "category": "ขนม",
+   "price": 25,
+   "cost": 16,
+   "stock": 45,
+   "min": 15
+  },
+  {
+   "id": "p5muu4d47y",
+   "sku": "SN002",
+   "name": "ช็อกโกแลตแท่ง",
+   "category": "ขนม",
+   "price": 18,
+   "cost": 11,
+   "stock": 30,
+   "min": 10
+  },
+  {
+   "id": "p6muu4d47z",
+   "sku": "FD001",
+   "name": "ข้าวกล่องไก่กระเทียม",
+   "category": "อาหาร",
+   "price": 45,
+   "cost": 28,
+   "stock": 25,
+   "min": 10
+  },
+  {
+   "id": "p7muu4d47z",
+   "sku": "FD002",
+   "name": "บะหมี่กึ่งสำเร็จรูป",
+   "category": "อาหาร",
+   "price": 8,
+   "cost": 5,
+   "stock": 90,
+   "min": 30
+  },
+  {
+   "id": "p8muu4d47z",
+   "sku": "HH001",
+   "name": "สบู่เหลว 450 มล.",
+   "category": "ของใช้",
+   "price": 79,
+   "cost": 52,
+   "stock": 18,
+   "min": 8
+  },
+  {
+   "id": "p9muu4d47z",
+   "sku": "HH002",
+   "name": "ผงซักฟอก 1 กก.",
+   "category": "ของใช้",
+   "price": 95,
+   "cost": 68,
+   "stock": 0,
+   "min": 6
+  },
+  {
+   "id": "pamuu4d47z",
+   "sku": "HH003",
+   "name": "กระดาษทิชชู่ 6 ม้วน",
+   "category": "ของใช้",
+   "price": 55,
+   "cost": 38,
+   "stock": 40,
+   "min": 12
+  }
+ ],
+ "sales": [
+  {
+   "id": "sbmuu4d480",
+   "ts": "2026-09-29T03:07:00.000Z",
+   "date": "2026-09-29",
+   "items": [
+    {
+     "pid": "p4muu4d47y",
+     "name": "มันฝรั่งทอดกรอบ",
+     "qty": 2,
+     "price": 25,
+     "cost": 16
+    },
+    {
+     "pid": "p9muu4d47z",
+     "name": "ผงซักฟอก 1 กก.",
+     "qty": 3,
+     "price": 95,
+     "cost": 68
+    }
+   ],
+   "total": 335,
+   "voided": false
+  },
+  {
+   "id": "scmuu4d48b",
+   "ts": "2026-09-29T05:14:00.000Z",
+   "date": "2026-09-29",
+   "items": [
+    {
+     "pid": "p7muu4d47z",
+     "name": "บะหมี่กึ่งสำเร็จรูป",
+     "qty": 3,
+     "price": 8,
+     "cost": 5
+    },
+    {
+     "pid": "p2muu4d47y",
+     "name": "กาแฟกระป๋อง",
+     "qty": 1,
+     "price": 15,
+     "cost": 9
+    },
+    {
+     "pid": "p7muu4d47z",
+     "name": "บะหมี่กึ่งสำเร็จรูป",
+     "qty": 2,
+     "price": 8,
+     "cost": 5
+    }
+   ],
+   "total": 55,
+   "voided": false
+  },
+  {
+   "id": "sdmuu4d48b",
+   "ts": "2026-09-29T07:21:00.000Z",
+   "date": "2026-09-29",
+   "items": [
+    {
+     "pid": "pamuu4d47z",
+     "name": "กระดาษทิชชู่ 6 ม้วน",
+     "qty": 1,
+     "price": 55,
+     "cost": 38
+    }
+   ],
+   "total": 55,
+   "voided": false
+  },
+  {
+   "id": "semuu4d48b",
+   "ts": "2026-09-29T09:28:00.000Z",
+   "date": "2026-09-29",
+   "items": [
+    {
+     "pid": "p3muu4d47y",
+     "name": "ชาเขียวพร้อมดื่ม",
+     "qty": 2,
+     "price": 20,
+     "cost": 12
+    },
+    {
+     "pid": "p8muu4d47z",
+     "name": "สบู่เหลว 450 มล.",
+     "qty": 3,
+     "price": 79,
+     "cost": 52
+    }
+   ],
+   "total": 277,
+   "voided": true,
+   "voidReason": "ทดสอบ fixture",
+   "voidedAt": "2026-09-29T09:28:00.000Z"
+  },
+  {
+   "id": "sfmuu4d48b",
+   "ts": "2026-09-29T11:35:00.000Z",
+   "date": "2026-09-29",
+   "items": [
+    {
+     "pid": "p6muu4d47z",
+     "name": "ข้าวกล่องไก่กระเทียม",
+     "qty": 3,
+     "price": 45,
+     "cost": 28
+    },
+    {
+     "pid": "p1muu4d47y",
+     "name": "น้ำดื่ม 600 มล.",
+     "qty": 1,
+     "price": 7,
+     "cost": 4
+    },
+    {
+     "pid": "p6muu4d47z",
+     "name": "ข้าวกล่องไก่กระเทียม",
+     "qty": 2,
+     "price": 45,
+     "cost": 28
+    }
+   ],
+   "total": 232,
+   "voided": false
+  },
+  {
+   "id": "sgmuu4d48b",
+   "ts": "2026-09-29T01:42:00.000Z",
+   "date": "2026-09-29",
+   "items": [
+    {
+     "pid": "p9muu4d47z",
+     "name": "ผงซักฟอก 1 กก.",
+     "qty": 1,
+     "price": 95,
+     "cost": 68
+    }
+   ],
+   "total": 95,
+   "voided": false
+  },
+  {
+   "id": "shmuu4d48c",
+   "ts": "2026-09-29T03:49:00.000Z",
+   "date": "2026-09-29",
+   "items": [
+    {
+     "pid": "p2muu4d47y",
+     "name": "กาแฟกระป๋อง",
+     "qty": 2,
+     "price": 15,
+     "cost": 9
+    },
+    {
+     "pid": "p7muu4d47z",
+     "name": "บะหมี่กึ่งสำเร็จรูป",
+     "qty": 3,
+     "price": 8,
+     "cost": 5
+    }
+   ],
+   "total": 54,
+   "voided": false
+  },
+  {
+   "id": "simuu4d48c",
+   "ts": "2026-09-29T05:56:00.000Z",
+   "date": "2026-09-29",
+   "items": [
+    {
+     "pid": "p5muu4d47y",
+     "name": "ช็อกโกแลตแท่ง",
+     "qty": 3,
+     "price": 18,
+     "cost": 11
+    },
+    {
+     "pid": "pamuu4d47z",
+     "name": "กระดาษทิชชู่ 6 ม้วน",
+     "qty": 1,
+     "price": 55,
+     "cost": 38
+    },
+    {
+     "pid": "p5muu4d47y",
+     "name": "ช็อกโกแลตแท่ง",
+     "qty": 2,
+     "price": 18,
+     "cost": 11
+    }
+   ],
+   "total": 145,
+   "voided": false
+  },
+  {
+   "id": "sjmuu4d48c",
+   "ts": "2026-09-29T07:03:00.000Z",
+   "date": "2026-09-29",
+   "items": [
+    {
+     "pid": "p8muu4d47z",
+     "name": "สบู่เหลว 450 มล.",
+     "qty": 1,
+     "price": 79,
+     "cost": 52
+    }
+   ],
+   "total": 79,
+   "voided": false
+  },
+  {
+   "id": "skmuu4d48c",
+   "ts": "2026-09-29T09:10:00.000Z",
+   "date": "2026-09-29",
+   "items": [
+    {
+     "pid": "p1muu4d47y",
+     "name": "น้ำดื่ม 600 มล.",
+     "qty": 2,
+     "price": 7,
+     "cost": 4
+    },
+    {
+     "pid": "p6muu4d47z",
+     "name": "ข้าวกล่องไก่กระเทียม",
+     "qty": 3,
+     "price": 45,
+     "cost": 28
+    }
+   ],
+   "total": 149,
+   "voided": false
+  },
+  {
+   "id": "slmuu4d48c",
+   "ts": "2026-09-29T11:17:00.000Z",
+   "date": "2026-09-29",
+   "items": [
+    {
+     "pid": "p4muu4d47y",
+     "name": "มันฝรั่งทอดกรอบ",
+     "qty": 3,
+     "price": 25,
+     "cost": 16
+    },
+    {
+     "pid": "p9muu4d47z",
+     "name": "ผงซักฟอก 1 กก.",
+     "qty": 1,
+     "price": 95,
+     "cost": 68
+    },
+    {
+     "pid": "p4muu4d47y",
+     "name": "มันฝรั่งทอดกรอบ",
+     "qty": 2,
+     "price": 25,
+     "cost": 16
+    }
+   ],
+   "total": 220,
+   "voided": false
+  },
+  {
+   "id": "smmuu4d48c",
+   "ts": "2026-09-29T01:24:00.000Z",
+   "date": "2026-09-29",
+   "items": [
+    {
+     "pid": "p7muu4d47z",
+     "name": "บะหมี่กึ่งสำเร็จรูป",
+     "qty": 1,
+     "price": 8,
+     "cost": 5
+    }
+   ],
+   "total": 8,
+   "voided": false
+  },
+  {
+   "id": "snmuu4d48c",
+   "ts": "2026-09-30T03:31:00.000Z",
+   "date": "2026-09-30",
+   "items": [
+    {
+     "pid": "pamuu4d47z",
+     "name": "กระดาษทิชชู่ 6 ม้วน",
+     "qty": 2,
+     "price": 55,
+     "cost": 38
+    },
+    {
+     "pid": "p5muu4d47y",
+     "name": "ช็อกโกแลตแท่ง",
+     "qty": 3,
+     "price": 18,
+     "cost": 11
+    }
+   ],
+   "total": 164,
+   "voided": false
+  },
+  {
+   "id": "somuu4d48c",
+   "ts": "2026-09-30T05:38:00.000Z",
+   "date": "2026-09-30",
+   "items": [
+    {
+     "pid": "p3muu4d47y",
+     "name": "ชาเขียวพร้อมดื่ม",
+     "qty": 3,
+     "price": 20,
+     "cost": 12
+    },
+    {
+     "pid": "p8muu4d47z",
+     "name": "สบู่เหลว 450 มล.",
+     "qty": 1,
+     "price": 79,
+     "cost": 52
+    },
+    {
+     "pid": "p3muu4d47y",
+     "name": "ชาเขียวพร้อมดื่ม",
+     "qty": 2,
+     "price": 20,
+     "cost": 12
+    }
+   ],
+   "total": 179,
+   "voided": false
+  },
+  {
+   "id": "spmuu4d48c",
+   "ts": "2026-09-30T07:45:00.000Z",
+   "date": "2026-09-30",
+   "items": [
+    {
+     "pid": "p6muu4d47z",
+     "name": "ข้าวกล่องไก่กระเทียม",
+     "qty": 1,
+     "price": 45,
+     "cost": 28
+    }
+   ],
+   "total": 45,
+   "voided": false
+  },
+  {
+   "id": "sqmuu4d48c",
+   "ts": "2026-09-30T09:52:00.000Z",
+   "date": "2026-09-30",
+   "items": [
+    {
+     "pid": "p9muu4d47z",
+     "name": "ผงซักฟอก 1 กก.",
+     "qty": 2,
+     "price": 95,
+     "cost": 68
+    },
+    {
+     "pid": "p4muu4d47y",
+     "name": "มันฝรั่งทอดกรอบ",
+     "qty": 3,
+     "price": 25,
+     "cost": 16
+    }
+   ],
+   "total": 265,
+   "voided": false
+  },
+  {
+   "id": "srmuu4d48c",
+   "ts": "2026-09-30T11:59:00.000Z",
+   "date": "2026-09-30",
+   "items": [
+    {
+     "pid": "p2muu4d47y",
+     "name": "กาแฟกระป๋อง",
+     "qty": 3,
+     "price": 15,
+     "cost": 9
+    },
+    {
+     "pid": "p7muu4d47z",
+     "name": "บะหมี่กึ่งสำเร็จรูป",
+     "qty": 1,
+     "price": 8,
+     "cost": 5
+    },
+    {
+     "pid": "p2muu4d47y",
+     "name": "กาแฟกระป๋อง",
+     "qty": 2,
+     "price": 15,
+     "cost": 9
+    }
+   ],
+   "total": 83,
+   "voided": false
+  },
+  {
+   "id": "ssmuu4d48c",
+   "ts": "2026-09-30T01:06:00.000Z",
+   "date": "2026-09-30",
+   "items": [
+    {
+     "pid": "p5muu4d47y",
+     "name": "ช็อกโกแลตแท่ง",
+     "qty": 1,
+     "price": 18,
+     "cost": 11
+    }
+   ],
+   "total": 18,
+   "voided": false
+  },
+  {
+   "id": "stmuu4d48c",
+   "ts": "2026-09-30T03:13:00.000Z",
+   "date": "2026-09-30",
+   "items": [
+    {
+     "pid": "p8muu4d47z",
+     "name": "สบู่เหลว 450 มล.",
+     "qty": 2,
+     "price": 79,
+     "cost": 52
+    },
+    {
+     "pid": "p3muu4d47y",
+     "name": "ชาเขียวพร้อมดื่ม",
+     "qty": 3,
+     "price": 20,
+     "cost": 12
+    }
+   ],
+   "total": 218,
+   "voided": false
+  },
+  {
+   "id": "sumuu4d48c",
+   "ts": "2026-09-30T05:20:00.000Z",
+   "date": "2026-09-30",
+   "items": [
+    {
+     "pid": "p1muu4d47y",
+     "name": "น้ำดื่ม 600 มล.",
+     "qty": 3,
+     "price": 7,
+     "cost": 4
+    },
+    {
+     "pid": "p6muu4d47z",
+     "name": "ข้าวกล่องไก่กระเทียม",
+     "qty": 1,
+     "price": 45,
+     "cost": 28
+    },
+    {
+     "pid": "p1muu4d47y",
+     "name": "น้ำดื่ม 600 มล.",
+     "qty": 2,
+     "price": 7,
+     "cost": 4
+    }
+   ],
+   "total": 80,
+   "voided": false
+  },
+  {
+   "id": "svmuu4d48c",
+   "ts": "2026-09-30T07:27:00.000Z",
+   "date": "2026-09-30",
+   "items": [
+    {
+     "pid": "p4muu4d47y",
+     "name": "มันฝรั่งทอดกรอบ",
+     "qty": 1,
+     "price": 25,
+     "cost": 16
+    }
+   ],
+   "total": 25,
+   "voided": false
+  },
+  {
+   "id": "swmuu4d48c",
+   "ts": "2026-10-01T09:34:00.000Z",
+   "date": "2026-10-01",
+   "items": [
+    {
+     "pid": "p7muu4d47z",
+     "name": "บะหมี่กึ่งสำเร็จรูป",
+     "qty": 2,
+     "price": 8,
+     "cost": 5
+    },
+    {
+     "pid": "p2muu4d47y",
+     "name": "กาแฟกระป๋อง",
+     "qty": 3,
+     "price": 15,
+     "cost": 9
+    }
+   ],
+   "total": 61,
+   "voided": false
+  },
+  {
+   "id": "sxmuu4d48c",
+   "ts": "2026-10-01T11:41:00.000Z",
+   "date": "2026-10-01",
+   "items": [
+    {
+     "pid": "pamuu4d47z",
+     "name": "กระดาษทิชชู่ 6 ม้วน",
+     "qty": 3,
+     "price": 55,
+     "cost": 38
+    },
+    {
+     "pid": "p5muu4d47y",
+     "name": "ช็อกโกแลตแท่ง",
+     "qty": 1,
+     "price": 18,
+     "cost": 11
+    },
+    {
+     "pid": "pamuu4d47z",
+     "name": "กระดาษทิชชู่ 6 ม้วน",
+     "qty": 2,
+     "price": 55,
+     "cost": 38
+    }
+   ],
+   "total": 293,
+   "voided": false
+  },
+  {
+   "id": "symuu4d48c",
+   "ts": "2026-10-01T01:48:00.000Z",
+   "date": "2026-10-01",
+   "items": [
+    {
+     "pid": "p3muu4d47y",
+     "name": "ชาเขียวพร้อมดื่ม",
+     "qty": 1,
+     "price": 20,
+     "cost": 12
+    }
+   ],
+   "total": 20,
+   "voided": false
+  },
+  {
+   "id": "szmuu4d48c",
+   "ts": "2026-10-01T03:55:00.000Z",
+   "date": "2026-10-01",
+   "items": [
+    {
+     "pid": "p6muu4d47z",
+     "name": "ข้าวกล่องไก่กระเทียม",
+     "qty": 2,
+     "price": 45,
+     "cost": 28
+    },
+    {
+     "pid": "p1muu4d47y",
+     "name": "น้ำดื่ม 600 มล.",
+     "qty": 3,
+     "price": 7,
+     "cost": 4
+    }
+   ],
+   "total": 111,
+   "voided": false
+  },
+  {
+   "id": "s10muu4d48c",
+   "ts": "2026-10-01T05:02:00.000Z",
+   "date": "2026-10-01",
+   "items": [
+    {
+     "pid": "p9muu4d47z",
+     "name": "ผงซักฟอก 1 กก.",
+     "qty": 3,
+     "price": 95,
+     "cost": 68
+    },
+    {
+     "pid": "p4muu4d47y",
+     "name": "มันฝรั่งทอดกรอบ",
+     "qty": 1,
+     "price": 25,
+     "cost": 16
+    },
+    {
+     "pid": "p9muu4d47z",
+     "name": "ผงซักฟอก 1 กก.",
+     "qty": 2,
+     "price": 95,
+     "cost": 68
+    }
+   ],
+   "total": 500,
+   "voided": false
+  },
+  {
+   "id": "s11muu4d48c",
+   "ts": "2026-10-01T07:09:00.000Z",
+   "date": "2026-10-01",
+   "items": [
+    {
+     "pid": "p2muu4d47y",
+     "name": "กาแฟกระป๋อง",
+     "qty": 1,
+     "price": 15,
+     "cost": 9
+    }
+   ],
+   "total": 15,
+   "voided": false
+  },
+  {
+   "id": "s12muu4d48c",
+   "ts": "2026-10-01T09:16:00.000Z",
+   "date": "2026-10-01",
+   "items": [
+    {
+     "pid": "p5muu4d47y",
+     "name": "ช็อกโกแลตแท่ง",
+     "qty": 2,
+     "price": 18,
+     "cost": 11
+    },
+    {
+     "pid": "pamuu4d47z",
+     "name": "กระดาษทิชชู่ 6 ม้วน",
+     "qty": 3,
+     "price": 55,
+     "cost": 38
+    }
+   ],
+   "total": 201,
+   "voided": false
+  },
+  {
+   "id": "s13muu4d48c",
+   "ts": "2026-10-01T11:23:00.000Z",
+   "date": "2026-10-01",
+   "items": [
+    {
+     "pid": "p8muu4d47z",
+     "name": "สบู่เหลว 450 มล.",
+     "qty": 3,
+     "price": 79,
+     "cost": 52
+    },
+    {
+     "pid": "p3muu4d47y",
+     "name": "ชาเขียวพร้อมดื่ม",
+     "qty": 1,
+     "price": 20,
+     "cost": 12
+    },
+    {
+     "pid": "p8muu4d47z",
+     "name": "สบู่เหลว 450 มล.",
+     "qty": 2,
+     "price": 79,
+     "cost": 52
+    }
+   ],
+   "total": 415,
+   "voided": false
+  },
+  {
+   "id": "s14muu4d48c",
+   "ts": "2026-10-01T01:30:00.000Z",
+   "date": "2026-10-01",
+   "items": [
+    {
+     "pid": "p1muu4d47y",
+     "name": "น้ำดื่ม 600 มล.",
+     "qty": 1,
+     "price": 7,
+     "cost": 4
+    }
+   ],
+   "total": 7,
+   "voided": false
+  },
+  {
+   "id": "s15muu4d48c",
+   "ts": "2026-10-01T03:37:00.000Z",
+   "date": "2026-10-01",
+   "items": [
+    {
+     "pid": "p4muu4d47y",
+     "name": "มันฝรั่งทอดกรอบ",
+     "qty": 2,
+     "price": 25,
+     "cost": 16
+    },
+    {
+     "pid": "p9muu4d47z",
+     "name": "ผงซักฟอก 1 กก.",
+     "qty": 3,
+     "price": 95,
+     "cost": 68
+    }
+   ],
+   "total": 335,
+   "voided": false
+  },
+  {
+   "id": "s16muu4d48c",
+   "ts": "2026-10-01T05:44:00.000Z",
+   "date": "2026-10-01",
+   "items": [
+    {
+     "pid": "p7muu4d47z",
+     "name": "บะหมี่กึ่งสำเร็จรูป",
+     "qty": 3,
+     "price": 8,
+     "cost": 5
+    },
+    {
+     "pid": "p2muu4d47y",
+     "name": "กาแฟกระป๋อง",
+     "qty": 1,
+     "price": 15,
+     "cost": 9
+    },
+    {
+     "pid": "p7muu4d47z",
+     "name": "บะหมี่กึ่งสำเร็จรูป",
+     "qty": 2,
+     "price": 8,
+     "cost": 5
+    }
+   ],
+   "total": 55,
+   "voided": false
+  },
+  {
+   "id": "s17muu4d48c",
+   "ts": "2026-10-01T07:51:00.000Z",
+   "date": "2026-10-01",
+   "items": [
+    {
+     "pid": "pamuu4d47z",
+     "name": "กระดาษทิชชู่ 6 ม้วน",
+     "qty": 1,
+     "price": 55,
+     "cost": 38
+    }
+   ],
+   "total": 55,
+   "voided": false
+  },
+  {
+   "id": "s18muu4d48c",
+   "ts": "2026-10-01T09:58:00.000Z",
+   "date": "2026-10-01",
+   "items": [
+    {
+     "pid": "p3muu4d47y",
+     "name": "ชาเขียวพร้อมดื่ม",
+     "qty": 2,
+     "price": 20,
+     "cost": 12
+    },
+    {
+     "pid": "p8muu4d47z",
+     "name": "สบู่เหลว 450 มล.",
+     "qty": 3,
+     "price": 79,
+     "cost": 52
+    }
+   ],
+   "total": 277,
+   "voided": false
+  },
+  {
+   "id": "s19muu4d48c",
+   "ts": "2026-10-02T11:05:00.000Z",
+   "date": "2026-10-02",
+   "items": [
+    {
+     "pid": "p6muu4d47z",
+     "name": "ข้าวกล่องไก่กระเทียม",
+     "qty": 3,
+     "price": 45,
+     "cost": 28
+    },
+    {
+     "pid": "p1muu4d47y",
+     "name": "น้ำดื่ม 600 มล.",
+     "qty": 1,
+     "price": 7,
+     "cost": 4
+    },
+    {
+     "pid": "p6muu4d47z",
+     "name": "ข้าวกล่องไก่กระเทียม",
+     "qty": 2,
+     "price": 45,
+     "cost": 28
+    }
+   ],
+   "total": 232,
+   "voided": false
+  },
+  {
+   "id": "s1amuu4d48c",
+   "ts": "2026-10-02T01:12:00.000Z",
+   "date": "2026-10-02",
+   "items": [
+    {
+     "pid": "p9muu4d47z",
+     "name": "ผงซักฟอก 1 กก.",
+     "qty": 1,
+     "price": 95,
+     "cost": 68
+    }
+   ],
+   "total": 95,
+   "voided": false
+  },
+  {
+   "id": "s1bmuu4d48c",
+   "ts": "2026-10-02T03:19:00.000Z",
+   "date": "2026-10-02",
+   "items": [
+    {
+     "pid": "p2muu4d47y",
+     "name": "กาแฟกระป๋อง",
+     "qty": 2,
+     "price": 15,
+     "cost": 9
+    },
+    {
+     "pid": "p7muu4d47z",
+     "name": "บะหมี่กึ่งสำเร็จรูป",
+     "qty": 3,
+     "price": 8,
+     "cost": 5
+    }
+   ],
+   "total": 54,
+   "voided": false
+  },
+  {
+   "id": "s1cmuu4d48c",
+   "ts": "2026-10-02T05:26:00.000Z",
+   "date": "2026-10-02",
+   "items": [
+    {
+     "pid": "p5muu4d47y",
+     "name": "ช็อกโกแลตแท่ง",
+     "qty": 3,
+     "price": 18,
+     "cost": 11
+    },
+    {
+     "pid": "pamuu4d47z",
+     "name": "กระดาษทิชชู่ 6 ม้วน",
+     "qty": 1,
+     "price": 55,
+     "cost": 38
+    },
+    {
+     "pid": "p5muu4d47y",
+     "name": "ช็อกโกแลตแท่ง",
+     "qty": 2,
+     "price": 18,
+     "cost": 11
+    }
+   ],
+   "total": 145,
+   "voided": false
+  },
+  {
+   "id": "s1dmuu4d48c",
+   "ts": "2026-10-02T07:33:00.000Z",
+   "date": "2026-10-02",
+   "items": [
+    {
+     "pid": "p8muu4d47z",
+     "name": "สบู่เหลว 450 มล.",
+     "qty": 1,
+     "price": 79,
+     "cost": 52
+    }
+   ],
+   "total": 79,
+   "voided": false
+  },
+  {
+   "id": "s1emuu4d48c",
+   "ts": "2026-10-02T09:40:00.000Z",
+   "date": "2026-10-02",
+   "items": [
+    {
+     "pid": "p1muu4d47y",
+     "name": "น้ำดื่ม 600 มล.",
+     "qty": 2,
+     "price": 7,
+     "cost": 4
+    },
+    {
+     "pid": "p6muu4d47z",
+     "name": "ข้าวกล่องไก่กระเทียม",
+     "qty": 3,
+     "price": 45,
+     "cost": 28
+    }
+   ],
+   "total": 149,
+   "voided": false
+  },
+  {
+   "id": "s1fmuu4d48c",
+   "ts": "2026-10-02T11:47:00.000Z",
+   "date": "2026-10-02",
+   "items": [
+    {
+     "pid": "p4muu4d47y",
+     "name": "มันฝรั่งทอดกรอบ",
+     "qty": 3,
+     "price": 25,
+     "cost": 16
+    },
+    {
+     "pid": "p9muu4d47z",
+     "name": "ผงซักฟอก 1 กก.",
+     "qty": 1,
+     "price": 95,
+     "cost": 68
+    },
+    {
+     "pid": "p4muu4d47y",
+     "name": "มันฝรั่งทอดกรอบ",
+     "qty": 2,
+     "price": 25,
+     "cost": 16
+    }
+   ],
+   "total": 220,
+   "voided": false
+  },
+  {
+   "id": "s1gmuu4d48c",
+   "ts": "2026-10-02T01:54:00.000Z",
+   "date": "2026-10-02",
+   "items": [
+    {
+     "pid": "p7muu4d47z",
+     "name": "บะหมี่กึ่งสำเร็จรูป",
+     "qty": 1,
+     "price": 8,
+     "cost": 5
+    }
+   ],
+   "total": 8,
+   "voided": false
+  },
+  {
+   "id": "s1hmuu4d48c",
+   "ts": "2026-10-02T03:01:00.000Z",
+   "date": "2026-10-02",
+   "items": [
+    {
+     "pid": "pamuu4d47z",
+     "name": "กระดาษทิชชู่ 6 ม้วน",
+     "qty": 2,
+     "price": 55,
+     "cost": 38
+    },
+    {
+     "pid": "p5muu4d47y",
+     "name": "ช็อกโกแลตแท่ง",
+     "qty": 3,
+     "price": 18,
+     "cost": 11
+    }
+   ],
+   "total": 164,
+   "voided": false
+  },
+  {
+   "id": "s1imuu4d48c",
+   "ts": "2026-10-02T05:08:00.000Z",
+   "date": "2026-10-02",
+   "items": [
+    {
+     "pid": "p3muu4d47y",
+     "name": "ชาเขียวพร้อมดื่ม",
+     "qty": 3,
+     "price": 20,
+     "cost": 12
+    },
+    {
+     "pid": "p8muu4d47z",
+     "name": "สบู่เหลว 450 มล.",
+     "qty": 1,
+     "price": 79,
+     "cost": 52
+    },
+    {
+     "pid": "p3muu4d47y",
+     "name": "ชาเขียวพร้อมดื่ม",
+     "qty": 2,
+     "price": 20,
+     "cost": 12
+    }
+   ],
+   "total": 179,
+   "voided": false
+  },
+  {
+   "id": "s1jmuu4d48c",
+   "ts": "2026-10-03T07:15:00.000Z",
+   "date": "2026-10-03",
+   "items": [
+    {
+     "pid": "p6muu4d47z",
+     "name": "ข้าวกล่องไก่กระเทียม",
+     "qty": 1,
+     "price": 45,
+     "cost": 28
+    }
+   ],
+   "total": 45,
+   "voided": false
+  },
+  {
+   "id": "s1kmuu4d48c",
+   "ts": "2026-10-03T09:22:00.000Z",
+   "date": "2026-10-03",
+   "items": [
+    {
+     "pid": "p9muu4d47z",
+     "name": "ผงซักฟอก 1 กก.",
+     "qty": 2,
+     "price": 95,
+     "cost": 68
+    },
+    {
+     "pid": "p4muu4d47y",
+     "name": "มันฝรั่งทอดกรอบ",
+     "qty": 3,
+     "price": 25,
+     "cost": 16
+    }
+   ],
+   "total": 265,
+   "voided": false
+  },
+  {
+   "id": "s1lmuu4d48c",
+   "ts": "2026-10-03T11:29:00.000Z",
+   "date": "2026-10-03",
+   "items": [
+    {
+     "pid": "p2muu4d47y",
+     "name": "กาแฟกระป๋อง",
+     "qty": 3,
+     "price": 15,
+     "cost": 9
+    },
+    {
+     "pid": "p7muu4d47z",
+     "name": "บะหมี่กึ่งสำเร็จรูป",
+     "qty": 1,
+     "price": 8,
+     "cost": 5
+    },
+    {
+     "pid": "p2muu4d47y",
+     "name": "กาแฟกระป๋อง",
+     "qty": 2,
+     "price": 15,
+     "cost": 9
+    }
+   ],
+   "total": 83,
+   "voided": false
+  },
+  {
+   "id": "s1mmuu4d48c",
+   "ts": "2026-10-03T01:36:00.000Z",
+   "date": "2026-10-03",
+   "items": [
+    {
+     "pid": "p5muu4d47y",
+     "name": "ช็อกโกแลตแท่ง",
+     "qty": 1,
+     "price": 18,
+     "cost": 11
+    }
+   ],
+   "total": 18,
+   "voided": false
+  },
+  {
+   "id": "s1nmuu4d48c",
+   "ts": "2026-10-03T03:43:00.000Z",
+   "date": "2026-10-03",
+   "items": [
+    {
+     "pid": "p8muu4d47z",
+     "name": "สบู่เหลว 450 มล.",
+     "qty": 2,
+     "price": 79,
+     "cost": 52
+    },
+    {
+     "pid": "p3muu4d47y",
+     "name": "ชาเขียวพร้อมดื่ม",
+     "qty": 3,
+     "price": 20,
+     "cost": 12
+    }
+   ],
+   "total": 218,
+   "voided": false
+  },
+  {
+   "id": "s1omuu4d48c",
+   "ts": "2026-10-03T05:50:00.000Z",
+   "date": "2026-10-03",
+   "items": [
+    {
+     "pid": "p1muu4d47y",
+     "name": "น้ำดื่ม 600 มล.",
+     "qty": 3,
+     "price": 7,
+     "cost": 4
+    },
+    {
+     "pid": "p6muu4d47z",
+     "name": "ข้าวกล่องไก่กระเทียม",
+     "qty": 1,
+     "price": 45,
+     "cost": 28
+    },
+    {
+     "pid": "p1muu4d47y",
+     "name": "น้ำดื่ม 600 มล.",
+     "qty": 2,
+     "price": 7,
+     "cost": 4
+    }
+   ],
+   "total": 80,
+   "voided": false
+  },
+  {
+   "id": "s1pmuu4d48d",
+   "ts": "2026-10-03T07:57:00.000Z",
+   "date": "2026-10-03",
+   "items": [
+    {
+     "pid": "p4muu4d47y",
+     "name": "มันฝรั่งทอดกรอบ",
+     "qty": 1,
+     "price": 25,
+     "cost": 16
+    }
+   ],
+   "total": 25,
+   "voided": false
+  },
+  {
+   "id": "s1qmuu4d48d",
+   "ts": "2026-10-03T09:04:00.000Z",
+   "date": "2026-10-03",
+   "items": [
+    {
+     "pid": "p7muu4d47z",
+     "name": "บะหมี่กึ่งสำเร็จรูป",
+     "qty": 2,
+     "price": 8,
+     "cost": 5
+    },
+    {
+     "pid": "p2muu4d47y",
+     "name": "กาแฟกระป๋อง",
+     "qty": 3,
+     "price": 15,
+     "cost": 9
+    }
+   ],
+   "total": 61,
+   "voided": false
+  },
+  {
+   "id": "s1rmuu4d48d",
+   "ts": "2026-10-03T11:11:00.000Z",
+   "date": "2026-10-03",
+   "items": [
+    {
+     "pid": "pamuu4d47z",
+     "name": "กระดาษทิชชู่ 6 ม้วน",
+     "qty": 3,
+     "price": 55,
+     "cost": 38
+    },
+    {
+     "pid": "p5muu4d47y",
+     "name": "ช็อกโกแลตแท่ง",
+     "qty": 1,
+     "price": 18,
+     "cost": 11
+    },
+    {
+     "pid": "pamuu4d47z",
+     "name": "กระดาษทิชชู่ 6 ม้วน",
+     "qty": 2,
+     "price": 55,
+     "cost": 38
+    }
+   ],
+   "total": 293,
+   "voided": false
+  },
+  {
+   "id": "s1smuu4d48d",
+   "ts": "2026-10-03T01:18:00.000Z",
+   "date": "2026-10-03",
+   "items": [
+    {
+     "pid": "p3muu4d47y",
+     "name": "ชาเขียวพร้อมดื่ม",
+     "qty": 1,
+     "price": 20,
+     "cost": 12
+    }
+   ],
+   "total": 20,
+   "voided": false
+  },
+  {
+   "id": "s1tmuu4d48d",
+   "ts": "2026-10-03T03:25:00.000Z",
+   "date": "2026-10-03",
+   "items": [
+    {
+     "pid": "p6muu4d47z",
+     "name": "ข้าวกล่องไก่กระเทียม",
+     "qty": 2,
+     "price": 45,
+     "cost": 28
+    },
+    {
+     "pid": "p1muu4d47y",
+     "name": "น้ำดื่ม 600 มล.",
+     "qty": 3,
+     "price": 7,
+     "cost": 4
+    }
+   ],
+   "total": 111,
+   "voided": false
+  },
+  {
+   "id": "s1umuu4d48d",
+   "ts": "2026-10-03T05:32:00.000Z",
+   "date": "2026-10-03",
+   "items": [
+    {
+     "pid": "p9muu4d47z",
+     "name": "ผงซักฟอก 1 กก.",
+     "qty": 3,
+     "price": 95,
+     "cost": 68
+    },
+    {
+     "pid": "p4muu4d47y",
+     "name": "มันฝรั่งทอดกรอบ",
+     "qty": 1,
+     "price": 25,
+     "cost": 16
+    },
+    {
+     "pid": "p9muu4d47z",
+     "name": "ผงซักฟอก 1 กก.",
+     "qty": 2,
+     "price": 95,
+     "cost": 68
+    }
+   ],
+   "total": 500,
+   "voided": false
+  },
+  {
+   "id": "s1vmuu4d48d",
+   "ts": "2026-10-03T07:39:00.000Z",
+   "date": "2026-10-03",
+   "items": [
+    {
+     "pid": "p2muu4d47y",
+     "name": "กาแฟกระป๋อง",
+     "qty": 1,
+     "price": 15,
+     "cost": 9
+    }
+   ],
+   "total": 15,
+   "voided": false
+  },
+  {
+   "id": "s1wmuu4d48d",
+   "ts": "2026-10-03T09:46:00.000Z",
+   "date": "2026-10-03",
+   "items": [
+    {
+     "pid": "p5muu4d47y",
+     "name": "ช็อกโกแลตแท่ง",
+     "qty": 2,
+     "price": 18,
+     "cost": 11
+    },
+    {
+     "pid": "pamuu4d47z",
+     "name": "กระดาษทิชชู่ 6 ม้วน",
+     "qty": 3,
+     "price": 55,
+     "cost": 38
+    }
+   ],
+   "total": 201,
+   "voided": false
+  },
+  {
+   "id": "s1xmuu4d48d",
+   "ts": "2026-10-04T11:53:00.000Z",
+   "date": "2026-10-04",
+   "items": [
+    {
+     "pid": "p8muu4d47z",
+     "name": "สบู่เหลว 450 มล.",
+     "qty": 3,
+     "price": 79,
+     "cost": 52
+    },
+    {
+     "pid": "p3muu4d47y",
+     "name": "ชาเขียวพร้อมดื่ม",
+     "qty": 1,
+     "price": 20,
+     "cost": 12
+    },
+    {
+     "pid": "p8muu4d47z",
+     "name": "สบู่เหลว 450 มล.",
+     "qty": 2,
+     "price": 79,
+     "cost": 52
+    }
+   ],
+   "total": 415,
+   "voided": false
+  },
+  {
+   "id": "s1ymuu4d48d",
+   "ts": "2026-10-04T01:00:00.000Z",
+   "date": "2026-10-04",
+   "items": [
+    {
+     "pid": "p1muu4d47y",
+     "name": "น้ำดื่ม 600 มล.",
+     "qty": 1,
+     "price": 7,
+     "cost": 4
+    }
+   ],
+   "total": 7,
+   "voided": false
+  },
+  {
+   "id": "s1zmuu4d48d",
+   "ts": "2026-10-04T03:07:00.000Z",
+   "date": "2026-10-04",
+   "items": [
+    {
+     "pid": "p4muu4d47y",
+     "name": "มันฝรั่งทอดกรอบ",
+     "qty": 2,
+     "price": 25,
+     "cost": 16
+    },
+    {
+     "pid": "p9muu4d47z",
+     "name": "ผงซักฟอก 1 กก.",
+     "qty": 3,
+     "price": 95,
+     "cost": 68
+    }
+   ],
+   "total": 335,
+   "voided": false
+  },
+  {
+   "id": "s20muu4d48d",
+   "ts": "2026-10-04T05:14:00.000Z",
+   "date": "2026-10-04",
+   "items": [
+    {
+     "pid": "p7muu4d47z",
+     "name": "บะหมี่กึ่งสำเร็จรูป",
+     "qty": 3,
+     "price": 8,
+     "cost": 5
+    },
+    {
+     "pid": "p2muu4d47y",
+     "name": "กาแฟกระป๋อง",
+     "qty": 1,
+     "price": 15,
+     "cost": 9
+    },
+    {
+     "pid": "p7muu4d47z",
+     "name": "บะหมี่กึ่งสำเร็จรูป",
+     "qty": 2,
+     "price": 8,
+     "cost": 5
+    }
+   ],
+   "total": 55,
+   "voided": false
+  },
+  {
+   "id": "s21muu4d48d",
+   "ts": "2026-10-04T07:21:00.000Z",
+   "date": "2026-10-04",
+   "items": [
+    {
+     "pid": "pamuu4d47z",
+     "name": "กระดาษทิชชู่ 6 ม้วน",
+     "qty": 1,
+     "price": 55,
+     "cost": 38
+    }
+   ],
+   "total": 55,
+   "voided": false
+  },
+  {
+   "id": "s22muu4d48d",
+   "ts": "2026-10-04T09:28:00.000Z",
+   "date": "2026-10-04",
+   "items": [
+    {
+     "pid": "p3muu4d47y",
+     "name": "ชาเขียวพร้อมดื่ม",
+     "qty": 2,
+     "price": 20,
+     "cost": 12
+    },
+    {
+     "pid": "p8muu4d47z",
+     "name": "สบู่เหลว 450 มล.",
+     "qty": 3,
+     "price": 79,
+     "cost": 52
+    }
+   ],
+   "total": 277,
+   "voided": false
+  },
+  {
+   "id": "s23muu4d48d",
+   "ts": "2026-10-04T11:35:00.000Z",
+   "date": "2026-10-04",
+   "items": [
+    {
+     "pid": "p6muu4d47z",
+     "name": "ข้าวกล่องไก่กระเทียม",
+     "qty": 3,
+     "price": 45,
+     "cost": 28
+    },
+    {
+     "pid": "p1muu4d47y",
+     "name": "น้ำดื่ม 600 มล.",
+     "qty": 1,
+     "price": 7,
+     "cost": 4
+    },
+    {
+     "pid": "p6muu4d47z",
+     "name": "ข้าวกล่องไก่กระเทียม",
+     "qty": 2,
+     "price": 45,
+     "cost": 28
+    }
+   ],
+   "total": 232,
+   "voided": false
+  },
+  {
+   "id": "s24muu4d48d",
+   "ts": "2026-10-04T01:42:00.000Z",
+   "date": "2026-10-04",
+   "items": [
+    {
+     "pid": "p9muu4d47z",
+     "name": "ผงซักฟอก 1 กก.",
+     "qty": 1,
+     "price": 95,
+     "cost": 68
+    }
+   ],
+   "total": 95,
+   "voided": false
+  },
+  {
+   "id": "s25muu4d48d",
+   "ts": "2026-10-04T03:49:00.000Z",
+   "date": "2026-10-04",
+   "items": [
+    {
+     "pid": "p2muu4d47y",
+     "name": "กาแฟกระป๋อง",
+     "qty": 2,
+     "price": 15,
+     "cost": 9
+    },
+    {
+     "pid": "p7muu4d47z",
+     "name": "บะหมี่กึ่งสำเร็จรูป",
+     "qty": 3,
+     "price": 8,
+     "cost": 5
+    }
+   ],
+   "total": 54,
+   "voided": false
+  },
+  {
+   "id": "s26muu4d48d",
+   "ts": "2026-10-04T05:56:00.000Z",
+   "date": "2026-10-04",
+   "items": [
+    {
+     "pid": "p5muu4d47y",
+     "name": "ช็อกโกแลตแท่ง",
+     "qty": 3,
+     "price": 18,
+     "cost": 11
+    },
+    {
+     "pid": "pamuu4d47z",
+     "name": "กระดาษทิชชู่ 6 ม้วน",
+     "qty": 1,
+     "price": 55,
+     "cost": 38
+    },
+    {
+     "pid": "p5muu4d47y",
+     "name": "ช็อกโกแลตแท่ง",
+     "qty": 2,
+     "price": 18,
+     "cost": 11
+    }
+   ],
+   "total": 145,
+   "voided": false
+  },
+  {
+   "id": "s27muu4d48d",
+   "ts": "2026-10-04T07:03:00.000Z",
+   "date": "2026-10-04",
+   "items": [
+    {
+     "pid": "p8muu4d47z",
+     "name": "สบู่เหลว 450 มล.",
+     "qty": 1,
+     "price": 79,
+     "cost": 52
+    }
+   ],
+   "total": 79,
+   "voided": false
+  },
+  {
+   "id": "s28muu4d48d",
+   "ts": "2026-10-04T16:53:15.949Z",
+   "date": "2026-10-04",
+   "items": [
+    {
+     "pid": "p1muu4d47y",
+     "name": "น้ำดื่ม 600 มล.",
+     "qty": 2,
+     "price": 7,
+     "cost": 4
+    },
+    {
+     "pid": "p6muu4d47z",
+     "name": "ข้าวกล่องไก่กระเทียม",
+     "qty": 3,
+     "price": 45,
+     "cost": 28
+    }
+   ],
+   "total": 149,
+   "voided": false
+  },
+  {
+   "id": "s29muu4d48d",
+   "ts": "2026-10-04T17:03:15.949Z",
+   "date": "2026-10-05",
+   "items": [
+    {
+     "pid": "p4muu4d47y",
+     "name": "มันฝรั่งทอดกรอบ",
+     "qty": 3,
+     "price": 25,
+     "cost": 16
+    },
+    {
+     "pid": "p9muu4d47z",
+     "name": "ผงซักฟอก 1 กก.",
+     "qty": 1,
+     "price": 95,
+     "cost": 68
+    },
+    {
+     "pid": "p4muu4d47y",
+     "name": "มันฝรั่งทอดกรอบ",
+     "qty": 2,
+     "price": 25,
+     "cost": 16
+    }
+   ],
+   "total": 220,
+   "voided": false
+  },
+  {
+   "id": "s2amuu4d48d",
+   "ts": "2026-10-04T17:13:15.949Z",
+   "date": "2026-10-05",
+   "items": [
+    {
+     "pid": "p7muu4d47z",
+     "name": "บะหมี่กึ่งสำเร็จรูป",
+     "qty": 1,
+     "price": 8,
+     "cost": 5
+    }
+   ],
+   "total": 8,
+   "voided": false
+  },
+  {
+   "id": "s2bmuu4d48d",
+   "ts": "2026-10-04T17:23:15.949Z",
+   "date": "2026-10-05",
+   "items": [
+    {
+     "pid": "pamuu4d47z",
+     "name": "กระดาษทิชชู่ 6 ม้วน",
+     "qty": 2,
+     "price": 55,
+     "cost": 38
+    },
+    {
+     "pid": "p5muu4d47y",
+     "name": "ช็อกโกแลตแท่ง",
+     "qty": 3,
+     "price": 18,
+     "cost": 11
+    }
+   ],
+   "total": 164,
+   "voided": false
+  },
+  {
+   "id": "s2cmuu4d48d",
+   "ts": "2026-10-04T17:33:15.949Z",
+   "date": "2026-10-05",
+   "items": [
+    {
+     "pid": "p3muu4d47y",
+     "name": "ชาเขียวพร้อมดื่ม",
+     "qty": 3,
+     "price": 20,
+     "cost": 12
+    },
+    {
+     "pid": "p8muu4d47z",
+     "name": "สบู่เหลว 450 มล.",
+     "qty": 1,
+     "price": 79,
+     "cost": 52
+    },
+    {
+     "pid": "p3muu4d47y",
+     "name": "ชาเขียวพร้อมดื่ม",
+     "qty": 2,
+     "price": 20,
+     "cost": 12
+    }
+   ],
+   "total": 179,
+   "voided": false
+  },
+  {
+   "id": "s2dmuu4d48e",
+   "ts": "2026-05-10T02:30:00.000Z",
+   "date": "2026-05-10",
+   "items": [
+    {
+     "pid": "p1muu4d47y",
+     "name": "น้ำดื่ม 600 มล.",
+     "qty": 2,
+     "price": 7,
+     "cost": 4
+    }
+   ],
+   "total": 14,
+   "voided": false
+  }
+ ],
+ "seq": 86
+}

@@ -36,6 +36,8 @@ label input{margin-top:3px;color:var(--tx)}
 .bar em{font-style:normal;font-size:.65rem;color:var(--mu);margin-top:2px;white-space:nowrap}
 .item{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--bd)}
 .item:last-child{border-bottom:0}
+.item.wrap{flex-wrap:wrap}
+.item.wrap .r{width:100%;text-align:left;white-space:normal}
 .item .l{min-width:0}.item .l b,.item .l div{overflow:hidden;text-overflow:ellipsis}
 .item .r{text-align:right;white-space:nowrap}
 .tag{display:inline-block;font-size:.75rem;border-radius:6px;padding:1px 6px;background:var(--bd);color:var(--mu)}
@@ -58,6 +60,32 @@ dialog h2{font-size:1.1rem}
 #toast.show{opacity:.95}
 .empty{color:var(--mu);text-align:center;padding:14px 0}
 .void{text-decoration:line-through;opacity:.55}
+.shiftbar{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.shiftbar.open{border-color:var(--pr)}
+.inl{display:flex;align-items:center;gap:6px;margin:4px 0 0;font-size:.85rem}
+.inl input{width:90px;padding:4px 6px;margin:0}
+fieldset.pay{border:1px solid var(--bd);border-radius:8px;margin:0 0 10px;padding:6px 10px;display:flex;gap:14px;flex-wrap:wrap}
+fieldset.pay legend{color:var(--mu);font-size:.9rem;padding:0 4px}
+label.radio{display:flex;align-items:center;gap:6px;margin:0;color:var(--tx);font-size:1rem;min-height:36px}
+label.radio input{width:auto;margin:0}
+.quick{display:flex;gap:6px;flex-wrap:wrap;margin:-2px 0 6px}
+.sumrow{display:flex;justify-content:space-between;padding:2px 0}
+.sumrow.big{font-size:1.3rem;font-weight:700;border-top:1px solid var(--bd);margin-top:6px;padding-top:8px}
+.pos{color:#1b7a3a}.neg{color:var(--dn)}
+.rc-wrap{max-height:60vh;overflow:auto;background:#fff;border:1px dashed var(--bd);border-radius:8px;padding:8px;margin-bottom:10px}
+.rc{font-family:"Sarabun","Noto Sans Thai",monospace,sans-serif;font-size:13px;line-height:1.35;color:#000;background:#fff;margin:0 auto}
+.rc.w80{width:72mm}.rc.w58{width:50mm}
+.rc h3{margin:0;text-align:center;font-size:16px}
+.rc .c{text-align:center}
+.rc hr{border:0;border-top:1px dashed #000;margin:5px 0}
+.rc .r2{display:flex;justify-content:space-between;gap:6px}
+.rc .sub{padding-left:8px;font-size:12px}
+#receipt-print{display:none}
+@media print{
+  body{background:#fff;padding:0}
+  body>*:not(#receipt-print){display:none!important}
+  #receipt-print{display:block}
+}
 :focus-visible{outline:3px solid var(--pr);outline-offset:2px}
 .banner{display:flex;justify-content:space-between;align-items:center;gap:8px;background:#fdecc8;color:#7a4d00;border:1px solid #f0cf8a;border-radius:12px;padding:10px 12px;margin-bottom:12px}
 .banner .btn{white-space:nowrap;flex:0 0 auto}
