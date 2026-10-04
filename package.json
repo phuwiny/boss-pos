@@ -1,0 +1,14 @@
+{
+  "name": "boss-pos",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Boss POS - บริหารสินค้าและดูยอดขายรายวัน (static site ไม่ต้อง build)",
+  "scripts": {
+    "test": "npm run test:unit && npm run test:smoke",
+    "test:unit": "node --test tests/store.test.mjs",
+    "test:smoke": "node tests/smoke.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.56.0"
+  }
+}

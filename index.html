@@ -8,14 +8,15 @@
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<header class="topbar"><h1>Boss POS</h1><span id="clock" class="muted"></span></header>
+<header class="topbar"><h1>Boss POS</h1><span id="clock" class="muted" aria-hidden="true"></span></header>
 
 <main>
   <!-- สรุปยอดขายรายวัน -->
-  <section id="view-dashboard" class="view active">
+  <section id="view-dashboard" class="view active" aria-label="สรุปยอดขาย">
+    <div id="backup-banner" class="banner" role="alert" hidden><span></span> <button class="btn small" id="backup-now">สำรองเลย</button></div>
     <div class="datebar">
       <button class="btn ghost" id="d-prev" aria-label="วันก่อนหน้า">‹</button>
-      <input type="date" id="d-date">
+      <input type="date" id="d-date" aria-label="เลือกวันที่">
       <button class="btn ghost" id="d-next" aria-label="วันถัดไป">›</button>
       <button class="btn small" id="d-today">วันนี้</button>
     </div>
@@ -29,7 +30,7 @@
 
   <!-- ขายสินค้า -->
   <section id="view-sell" class="view">
-    <input type="search" id="s-search" placeholder="ค้นหาชื่อ / รหัสสินค้า" autocomplete="off">
+    <input type="search" id="s-search" placeholder="ค้นหาชื่อ / รหัสสินค้า (Enter = เพิ่มรายการแรก)" aria-label="ค้นหาสินค้าที่จะขาย" autocomplete="off">
     <div id="s-list" class="grid"></div>
     <div class="card cart" id="cart"></div>
   </section>
@@ -37,8 +38,8 @@
   <!-- สินค้า -->
   <section id="view-products" class="view">
     <div class="row">
-      <input type="search" id="p-search" placeholder="ค้นหาสินค้า" autocomplete="off">
-      <select id="p-cat"></select>
+      <input type="search" id="p-search" placeholder="ค้นหาสินค้า" aria-label="ค้นหาสินค้า" autocomplete="off">
+      <select id="p-cat" aria-label="กรองตามหมวดหมู่"></select>
       <button class="btn primary" id="p-add">+ เพิ่ม</button>
     </div>
     <div id="p-list"></div>
@@ -51,24 +52,27 @@
       <p class="muted">ข้อมูลเก็บในเบราว์เซอร์ของเครื่องนี้ (localStorage) ควรสำรองไฟล์เป็นระยะ</p>
       <div class="stack">
         <button class="btn" id="x-json">สำรองข้อมูล (JSON)</button>
-        <label class="btn" for="x-import">นำเข้าข้อมูล (JSON)</label>
+        <button class="btn" id="x-import-btn">นำเข้าข้อมูล (JSON)</button>
         <input type="file" id="x-import" accept="application/json" hidden>
         <button class="btn" id="x-csv-sales">ส่งออกยอดขาย (CSV)</button>
         <button class="btn" id="x-csv-prod">ส่งออกสินค้า (CSV)</button>
+        <button class="btn" id="x-csv-import-btn">นำเข้าสินค้า (CSV)</button>
+        <input type="file" id="x-csv-import" accept=".csv,text/csv" hidden>
+        <button class="btn" id="x-csv-tpl">ดาวน์โหลดไฟล์ตัวอย่างสำหรับนำเข้า</button>
         <button class="btn danger" id="x-reset">ล้างข้อมูลและโหลดตัวอย่าง</button>
       </div>
     </div>
   </section>
 </main>
 
-<nav class="tabs" id="tabs">
+<nav class="tabs" id="tabs" aria-label="เมนูหลัก">
   <button data-view="dashboard" class="on">ยอดขาย</button>
   <button data-view="sell">ขาย</button>
   <button data-view="products">สินค้า</button>
   <button data-view="settings">ตั้งค่า</button>
 </nav>
 
-<dialog id="dlg">
+<dialog id="dlg" aria-labelledby="pf-title">
   <form method="dialog" id="pf">
     <h2 id="pf-title">สินค้า</h2>
     <label>รหัสสินค้า (SKU)<input name="sku" required maxlength="30"></label>
@@ -83,12 +87,36 @@
       <label>สต็อก<input name="stock" type="number" min="0" step="1" inputmode="numeric" required></label>
       <label>จุดสั่งซื้อ<input name="min" type="number" min="0" step="1" inputmode="numeric" required></label>
     </div>
-    <p class="err" id="pf-err"></p>
+    <p class="err" id="pf-err" role="alert"></p>
     <div class="row end">
       <button type="button" class="btn" id="pf-cancel">ยกเลิก</button>
       <button type="submit" class="btn primary" id="pf-save">บันทึก</button>
     </div>
   </form>
+</dialog>
+
+<dialog id="vdlg" aria-labelledby="vf-title">
+  <form method="dialog" id="vf">
+    <h2 id="vf-title">ยกเลิกบิล</h2>
+    <p class="muted">สต็อกของสินค้าในบิลจะถูกคืน</p>
+    <label>เหตุผลการยกเลิก<input name="reason" required maxlength="200" autocomplete="off"></label>
+    <p class="err" id="vf-err" role="alert"></p>
+    <div class="row end">
+      <button type="button" class="btn" id="vf-cancel">ไม่ยกเลิก</button>
+      <button type="submit" class="btn danger">ยืนยันยกเลิกบิล</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="idlg" aria-labelledby="i-title">
+  <h2 id="i-title">นำเข้าสินค้าจาก CSV</h2>
+  <p id="i-summary"></p>
+  <ul id="i-errors" class="err-list"></ul>
+  <p class="muted">คอลัมน์ที่จำเป็น: SKU, ชื่อ, ราคาขาย, ต้นทุน, สต็อก (ไม่บังคับ: หมวดหมู่, จุดสั่งซื้อ) รายการที่ SKU ซ้ำหรือผิดพลาดจะถูกข้าม ไม่เขียนทับสินค้าเดิม</p>
+  <div class="row end">
+    <button type="button" class="btn" id="i-cancel">ยกเลิก</button>
+    <button type="button" class="btn primary" id="i-ok">นำเข้า</button>
+  </div>
 </dialog>
 
 <div id="toast" role="status" aria-live="polite"></div>
