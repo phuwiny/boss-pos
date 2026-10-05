@@ -2,15 +2,15 @@
   'use strict';
   var S = window.Store;
   var $ = function (id) { return document.getElementById(id); };
-  var cart = []; // [{pid, qty}]
+  var cart = []; // [{pid, qty, disc}]
   var selDate = S.today();
-  var voidId = null, importRows = [];
+  var voidId = null, importRows = [], stockPid = null, stockType = 'receive';
   var editingId = null;
 
   function esc(s) {
     return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; });
   }
-  function baht(n) { return Number(n).toLocaleString('th-TH', { minimumFractionDigits: 0, maximumFractionDigits: 2 }); }
+  function baht(n) { n = Number(n); var d = Math.abs(n % 1) > 1e-9 ? 2 : 0; return n.toLocaleString('th-TH', { minimumFractionDigits: d, maximumFractionDigits: 2 }); }
   function toast(msg) {
     var t = $('toast'); t.textContent = msg; t.classList.add('show');
     clearTimeout(toast.t); toast.t = setTimeout(function () { t.classList.remove('show'); }, 2200);
@@ -72,13 +72,29 @@
       return '<div class="item"><div class="l">' + (i + 1) + '. ' + esc(t.name) + '</div><div class="r">' + t.qty + ' ชิ้น · <b>' + baht(t.revenue) + '</b></div></div>';
     }).join('') : '<div class="empty">ยังไม่มียอดขายในวันนี้</div>';
 
+    var pb = S.paymentBreakdown(selDate);
+    $('pay').innerHTML = s.bills ? ['cash', 'transfer', 'qr', 'unknown'].filter(function (k) { return pb[k].bills; }).map(function (k) {
+      return '<div class="item"><div class="l">' + S.METHOD_TH[k] + '</div><div class="r">' + pb[k].bills + ' บิล · <b>' + baht(pb[k].amount) + '</b></div></div>';
+    }).join('') + (s.discount ? '<div class="item"><div class="l muted">ส่วนลดรวมที่ให้ไป</div><div class="r">' + baht(s.discount) + '</div></div>' : '')
+      : '<div class="empty">ยังไม่มียอดขาย</div>';
+
+    var shs = S.shiftsOn(selDate);
+    $('shifts').innerHTML = shs.length ? shs.map(function (h) {
+      var open = !h.closedAt;
+      return '<div class="item"><div class="l"><b>' + S.timeLabel(h.openedAt) + (open ? ' – (เปิดอยู่)' : ' – ' + S.timeLabel(h.closedAt)) + '</b>' +
+        '<div class="muted">เงินทอนตั้งต้น ' + baht(h.openCash) + ' · ขายเงินสด ' + baht(h.cashSales) + ' · ' + h.bills + ' บิล · รวม ' + baht(h.revenue) + '</div>' +
+        (open ? '' : '<div class="muted">ควรมี ' + baht(h.expected) + ' · นับได้ ' + baht(h.countedCash) + (h.note ? ' · ' + esc(h.note) : '') + '</div>') + '</div>' +
+        '<div class="r">' + (open ? '<span class="tag warn">กำลังเปิด</span>' : '<b class="' + (h.diff === 0 ? '' : h.diff > 0 ? 'pos' : 'neg') + '">' + (h.diff > 0 ? '+' : '') + baht(h.diff) + '</b><div class="muted">' + (h.diff === 0 ? 'ตรง' : h.diff > 0 ? 'เกิน' : 'ขาด') + '</div>') + '</div></div>';
+    }).join('') : '<div class="empty">ไม่มีรอบขายในวันนี้</div>';
+
     var bills = S.sales().filter(function (x) { return x.date === selDate; }).sort(function (a, b) { return b.ts < a.ts ? -1 : 1; });
     $('bills').innerHTML = bills.length ? bills.map(function (b) {
-      var tm = S.timeLabel(b.ts);
-      return '<div class="item"><div class="l"><b class="' + (b.voided ? 'void' : '') + '">' + tm + ' น. · ' + baht(b.total) + ' บาท</b>' +
-        '<div class="muted">' + esc(b.items.map(function (i) { return i.name + ' ×' + i.qty; }).join(', ')) + '</div>' +
+      var tm = S.timeLabel(b.ts), no = S.billNo(b.no);
+      return '<div class="item"><div class="l"><b class="' + (b.voided ? 'void' : '') + '">#' + no + ' · ' + tm + ' น. · ' + baht(b.total) + ' บาท</b> <span class="tag">' + S.METHOD_TH[b.paymentMethod] + '</span>' +
+        '<div class="muted">' + esc(b.items.map(function (i) { return i.name + ' ×' + i.qty; }).join(', ')) + (b.discount ? ' · ลด ' + baht(b.discount) : '') + '</div>' +
         (b.voided && b.voidReason ? '<div class="muted">เหตุผล: ' + esc(b.voidReason) + '</div>' : '') + '</div>' +
-        '<div class="r">' + (b.voided ? '<span class="tag out">ยกเลิก</span>' : '<button class="btn small danger" data-void="' + esc(b.id) + '" aria-label="ยกเลิกบิลเวลา ' + tm + '">ยกเลิกบิล</button>') + '</div></div>';
+        '<div class="r"><button class="btn small" data-reprint="' + esc(b.id) + '" aria-label="พิมพ์ใบเสร็จบิล ' + no + '">ใบเสร็จ</button> ' +
+        (b.voided ? '<span class="tag out">ยกเลิก</span>' : '<button class="btn small danger" data-void="' + esc(b.id) + '" aria-label="ยกเลิกบิล ' + no + '">ยกเลิกบิล</button>') + '</div></div>';
     }).join('') : '<div class="empty">ไม่มีบิลในวันที่เลือก</div>';
 
     var low = S.lowStock();
@@ -98,25 +114,40 @@
     }).join('') : '<div class="empty">ไม่พบสินค้า</div>';
     renderCart();
   }
+  function renderShiftBar() {
+    var sh = S.currentShift(), el = $('shift-bar');
+    el.classList.toggle('open', !!sh);
+    if (!sh) {
+      el.innerHTML = '<span class="muted">ยังไม่ได้เปิดรอบขาย (ขายได้ แต่ยอดจะไม่ถูกนับในการปิดรอบ)</span><button class="btn small primary" id="sh-open">เปิดรอบขาย</button>';
+    } else {
+      var f = S.shiftSummary(sh);
+      el.innerHTML = '<span>รอบขายเปิดตั้งแต่ <b>' + S.timeLabel(sh.openedAt) + '</b> · เงินสดที่ควรมี <b id="sh-expected">฿' + baht(f.expected) + '</b></span><button class="btn small" id="sh-close">ปิดรอบ</button>';
+    }
+  }
+  function cartQuote() { return S.quote(cart, null); }
   function renderCart() {
-    var total = 0;
+    renderShiftBar();
+    var q = cart.length ? cartQuote() : null, gross = 0;
     var rows = cart.map(function (c) {
       var p = S.find(c.pid); if (!p) return '';
-      total += p.price * c.qty;
-      return '<div class="item"><div class="l"><b>' + esc(p.name) + '</b><div class="muted">฿' + baht(p.price) + '</div></div>' +
+      gross += p.price * c.qty;
+      return '<div class="item"><div class="l"><b>' + esc(p.name) + '</b><div class="muted">฿' + baht(p.price) + ' × ' + c.qty + ' = ฿' + baht(p.price * c.qty) + '</div>' +
+        '<label class="inl">ส่วนลดรายการ ฿<input type="number" min="0" step="0.01" inputmode="decimal" data-disc="' + esc(p.id) + '" value="' + (c.disc ? esc(c.disc) : '') + '" aria-label="ส่วนลดรายการ ' + esc(p.name) + '"></label></div>' +
         '<div class="qty"><button data-dec="' + esc(p.id) + '" aria-label="ลด">−</button><span>' + c.qty +
         '</span><button data-inc="' + esc(p.id) + '" aria-label="เพิ่ม">+</button></div></div>';
     }).join('');
+    var ok = q && q.ok;
     $('cart').innerHTML = '<h2>ตะกร้า</h2>' + (rows || '<div class="empty">ยังไม่มีสินค้า แตะสินค้าด้านบนเพื่อเพิ่ม</div>') +
-      '<div class="total"><span>รวม</span><span id="c-total">฿' + baht(total) + '</span></div>' +
+      (q && !q.ok ? '<p class="err" role="alert">' + esc(q.error) + '</p>' : '') +
+      '<div class="total"><span>รวม</span><span id="c-total">฿' + baht(ok ? q.total : gross) + '</span></div>' +
       '<div class="row end"><button class="btn" id="c-clear"' + (cart.length ? '' : ' disabled') + '>ล้าง</button>' +
-      '<button class="btn primary" id="c-pay"' + (cart.length ? '' : ' disabled') + '>ชำระเงิน</button></div>';
+      '<button class="btn primary" id="c-pay"' + (ok ? '' : ' disabled') + '>ชำระเงิน</button></div>';
   }
   function addToCart(id) {
     var p = S.find(id); if (!p) return;
     var c = cart.filter(function (x) { return x.pid === id; })[0];
     if ((c ? c.qty : 0) + 1 > p.stock) return toast('สต็อกไม่พอ: ' + p.name);
-    if (c) c.qty++; else cart.push({ pid: id, qty: 1 });
+    if (c) c.qty++; else cart.push({ pid: id, qty: 1, disc: 0 });
     renderCart();
   }
   function changeQty(id, d) {
@@ -124,6 +155,133 @@
     if (d > 0) return addToCart(id);
     c.qty--; if (c.qty <= 0) cart = cart.filter(function (x) { return x !== c; });
     renderCart();
+  }
+
+  /* ---------- ชำระเงิน ---------- */
+  function cfValues() {
+    var f = $('cf').elements;
+    return { bill: { type: f.btype.value, value: f.bdisc.value }, method: f.method.value, received: f.received.value };
+  }
+  function refreshCheckout() {
+    var v = cfValues(), q = S.quote(cart, v.bill), el = $('c-sum');
+    $('c-cash').hidden = v.method !== 'cash';
+    if (!q.ok) { el.innerHTML = ''; $('c-err').textContent = q.error; $('c-ok').disabled = true; $('c-change').textContent = '–'; $('c-quick').innerHTML = ''; delete $('c-quick').dataset.total; return; }
+    el.innerHTML = '<div class="sumrow"><span>รวม</span><span>฿' + baht(q.subtotal) + '</span></div>' +
+      (q.lineDiscount ? '<div class="sumrow"><span>ส่วนลดรายการ</span><span>−฿' + baht(q.lineDiscount) + '</span></div>' : '') +
+      (q.billDiscount ? '<div class="sumrow"><span>ส่วนลดท้ายบิล' + (q.billSpec && q.billSpec.type === 'pct' ? ' (' + q.billSpec.value + '%)' : '') + '</span><span>−฿' + baht(q.billDiscount) + '</span></div>' : '') +
+      '<div class="sumrow big"><span>ยอดสุทธิ</span><span id="cd-total">฿' + baht(q.total) + '</span></div>';
+    var err = '', ch = '–';
+    if (v.method === 'cash') {
+      if (v.received === '') ch = '฿0';
+      else if (Number(v.received) >= q.total) ch = '฿' + baht(Math.round((Number(v.received) - q.total) * 100) / 100);
+      else err = 'รับเงินไม่พอ (ขาด ฿' + baht(Math.round((q.total - Number(v.received)) * 100) / 100) + ')';
+    }
+    $('c-change').textContent = ch; $('c-err').textContent = err; $('c-ok').disabled = !!err;
+    // วาดปุ่มลัดใหม่เฉพาะเมื่อยอดเปลี่ยน ไม่งั้นการ re-render ตอน blur ช่องรับเงินจะแทนที่ปุ่มก่อนคลิกเสร็จ (คลิกหลุด)
+    if ($('c-quick').dataset.total === String(q.total)) return;
+    $('c-quick').dataset.total = String(q.total);
+    var amounts = [q.total];
+    [20, 50, 100, 500, 1000].forEach(function (d) { var a = Math.ceil(q.total / d) * d; if (amounts.indexOf(a) < 0 && a > q.total) amounts.push(a); });
+    $('c-quick').innerHTML = amounts.slice(0, 5).map(function (a, i) {
+      return '<button type="button" class="btn small" data-recv="' + a + '">' + (i === 0 ? 'พอดี ' : '') + baht(a) + '</button>';
+    }).join('');
+  }
+  function openCheckout() {
+    if (!cart.length || !cartQuote().ok) return;
+    $('cf').reset(); $('c-err').textContent = ''; delete $('c-quick').dataset.total;
+    $('cdlg').showModal();
+    refreshCheckout();
+  }
+
+  /* ---------- ใบเสร็จ ---------- */
+  function receiptHTML(sale) {
+    var st = S.settings(), d = new Date(sale.ts);
+    var dt = d.toLocaleString('th-TH', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Bangkok' });
+    var h = '<div class="rc w' + st.receiptWidth + '"><h3>' + esc(st.shopName) + '</h3>' +
+      (st.taxId ? '<div class="c">เลขประจำตัวผู้เสียภาษี ' + esc(st.taxId) + '</div>' : '') +
+      '<div class="c">ใบเสร็จรับเงิน</div><div class="c">เลขที่ ' + S.billNo(sale.no) + '</div><div class="c">' + esc(dt) + '</div>' +
+      (sale.voided ? '<div class="c"><b>*** ยกเลิกแล้ว ***</b></div>' + (sale.voidReason ? '<div class="c">' + esc(sale.voidReason) + '</div>' : '') : '') + '<hr>';
+    sale.items.forEach(function (i) {
+      h += '<div>' + esc(i.name) + '</div><div class="r2 sub"><span>' + i.qty + ' × ' + baht(i.price) + '</span><span>' + baht(i.qty * i.price) + '</span></div>';
+      if (i.discount) h += '<div class="r2 sub"><span>ส่วนลด</span><span>−' + baht(i.discount) + '</span></div>';
+    });
+    h += '<hr><div class="r2"><span>รวม</span><span>' + baht(sale.subtotal) + '</span></div>';
+    var ld = sale.discount - (sale.billDiscount || 0);
+    if (ld) h += '<div class="r2"><span>ส่วนลดรายการ</span><span>−' + baht(ld) + '</span></div>';
+    if (sale.billDiscount) h += '<div class="r2"><span>ส่วนลดท้ายบิล' + (sale.billDiscountSpec && sale.billDiscountSpec.type === 'pct' ? ' ' + sale.billDiscountSpec.value + '%' : '') + '</span><span>−' + baht(sale.billDiscount) + '</span></div>';
+    h += '<div class="r2"><b>ยอดสุทธิ</b><b>' + baht(sale.total) + '</b></div><hr>' +
+      '<div class="r2"><span>ชำระโดย</span><span>' + S.METHOD_TH[sale.paymentMethod] + '</span></div>';
+    if (sale.paymentMethod === 'cash') h += '<div class="r2"><span>รับเงิน</span><span>' + baht(sale.paid) + '</span></div><div class="r2"><span>เงินทอน</span><span>' + baht(sale.change) + '</span></div>';
+    if (st.footer) h += '<hr><div class="c">' + esc(st.footer) + '</div>';
+    return h + '</div>';
+  }
+  var receiptId = null;
+  function showReceipt(id) {
+    var sale = S.saleById(id); if (!sale) return;
+    receiptId = id;
+    $('r-body').innerHTML = receiptHTML(sale);
+    $('rdlg').showModal();
+  }
+  function printReceipt() {
+    var sale = S.saleById(receiptId); if (!sale) return;
+    var w = S.settings().receiptWidth;
+    $('print-page').textContent = '@page{size:' + w + 'mm auto;margin:2mm}';
+    $('receipt-print').innerHTML = receiptHTML(sale);
+    window.print();
+  }
+
+  /* ---------- รอบขาย ---------- */
+  function refreshCloseShift() {
+    var sh = S.currentShift(); if (!sh) return;
+    var f = S.shiftSummary(sh), v = $('xf').elements.counted.value, diff = $('x-diff');
+    if (v === '' || isNaN(Number(v))) { diff.textContent = '–'; diff.className = ''; return; }
+    var d = Math.round((Number(v) - f.expected) * 100) / 100;
+    diff.textContent = (d > 0 ? '+' : '') + baht(d) + (d === 0 ? ' (ตรง)' : d > 0 ? ' (เกิน)' : ' (ขาด)');
+    diff.className = d === 0 ? '' : d > 0 ? 'pos' : 'neg';
+  }
+  function openCloseShift() {
+    var sh = S.currentShift(); if (!sh) return;
+    var f = S.shiftSummary(sh);
+    $('xf').reset(); $('x-err').textContent = '';
+    $('x-sum').innerHTML = '<div class="sumrow"><span>เงินทอนตั้งต้น</span><span>฿' + baht(sh.openCash) + '</span></div>' +
+      '<div class="sumrow"><span>ขายเงินสดในรอบ (' + f.bills + ' บิลรวมทุกวิธี)</span><span>฿' + baht(f.cashSales) + '</span></div>' +
+      '<div class="sumrow big"><span>เงินสดที่ควรมี</span><span id="x-expected">฿' + baht(f.expected) + '</span></div>';
+    refreshCloseShift();
+    $('xdlg').showModal();
+  }
+
+  /* ---------- สต็อก ---------- */
+  function renderStock() {
+    var q = $('st-search').value.trim().toLowerCase();
+    var list = S.products().filter(function (p) { return !q || (p.name + ' ' + p.sku).toLowerCase().indexOf(q) >= 0; });
+    $('st-list').innerHTML = '<div class="card">' + (list.length ? list.map(function (p) {
+      return '<div class="item wrap"><div class="l"><b>' + esc(p.name) + '</b> ' + stockTag(p) + '<div class="muted">' + esc(p.sku) + ' · คงเหลือ <b>' + p.stock + '</b> (ขั้นต่ำ ' + p.min + ')</div></div>' +
+        '<div class="r"><button class="btn small" data-mv="receive" data-pid="' + esc(p.id) + '">รับเข้า</button> ' +
+        '<button class="btn small" data-mv="adjust" data-pid="' + esc(p.id) + '">นับ/ปรับยอด</button> ' +
+        '<button class="btn small danger" data-mv="waste" data-pid="' + esc(p.id) + '">ชำรุด</button></div></div>';
+    }).join('') : '<div class="empty">ไม่พบสินค้า</div>') + '</div>';
+    var mv = S.moves().filter(function (m) { return !q || (m.name + ' ' + m.sku).toLowerCase().indexOf(q) >= 0; }).slice(0, 50);
+    $('st-moves').innerHTML = mv.length ? mv.map(function (m) {
+      var d = S.dateKey(new Date(m.ts));
+      return '<div class="item"><div class="l"><b>' + esc(m.name) + '</b> <span class="tag">' + (S.MOVE_TH[m.type] || m.type) + '</span>' +
+        '<div class="muted">' + thDate(d) + ' ' + S.timeLabel(m.ts) + (m.reason ? ' · ' + esc(m.reason) : '') + (m.note ? ' · ' + esc(m.note) : '') + '</div></div>' +
+        '<div class="r"><b class="' + (m.qty > 0 ? 'pos' : 'neg') + '">' + (m.qty > 0 ? '+' : '') + m.qty + '</b><div class="muted">คงเหลือ ' + m.balance + '</div></div></div>';
+    }).join('') : '<div class="empty">ยังไม่มีรายการ</div>';
+  }
+  var MOVE_TITLE = { receive: 'รับสินค้าเข้า', adjust: 'นับสต็อก / ปรับยอด', waste: 'ตัดสินค้าชำรุด / สูญเสีย' };
+  function openStockForm(pid, type) {
+    var p = S.find(pid); if (!p) return;
+    stockPid = pid; stockType = type;
+    var f = $('sf').elements;
+    $('sf').reset(); $('s-err').textContent = '';
+    $('s-title').textContent = MOVE_TITLE[type];
+    $('s-prod').textContent = p.name + ' (' + p.sku + ') · คงเหลือในระบบ ' + p.stock;
+    $('s-qty-l').hidden = type === 'adjust';
+    $('s-counted-l').hidden = type !== 'adjust';
+    f.qty.required = type !== 'adjust'; f.counted.required = type === 'adjust';
+    $('reasons').innerHTML = (type === 'waste' ? ['ชำรุด', 'หมดอายุ', 'สูญหาย'] : type === 'adjust' ? ['นับสต็อก', 'ของขาด/เกิน'] : ['รับของจากซัพพลายเออร์', 'ลูกค้าคืนสินค้า']).map(function (x) { return '<option value="' + x + '">'; }).join('');
+    f.reason.required = type === 'waste';
+    $('sdlg').showModal();
   }
 
   /* ---------- สินค้า ---------- */
@@ -169,7 +327,13 @@
     if (name === 'dashboard') renderDashboard();
     if (name === 'sell') renderSell();
     if (name === 'products') renderProducts();
+    if (name === 'stock') renderStock();
+    if (name === 'settings') renderSettings();
     window.scrollTo(0, 0);
+  }
+  function renderSettings() {
+    var st = S.settings(), f = $('shf').elements;
+    f.shopName.value = st.shopName; f.taxId.value = st.taxId; f.footer.value = st.footer; f.receiptWidth.value = String(st.receiptWidth);
   }
   function refresh() {
     var v = document.querySelector('.view.active').id.replace('view-', '');
@@ -213,11 +377,78 @@
       if (t.dataset.inc) changeQty(t.dataset.inc, 1);
       else if (t.dataset.dec) changeQty(t.dataset.dec, -1);
       else if (t.id === 'c-clear') { cart = []; renderCart(); }
-      else if (t.id === 'c-pay') {
-        var r = S.checkout(cart);
-        if (!r.ok) return toast(r.error);
-        cart = []; toast('บันทึกการขาย ฿' + baht(r.sale.total)); selDate = r.sale.date; renderSell();
-      }
+      else if (t.id === 'c-pay') openCheckout();
+    });
+    $('cart').addEventListener('change', function (e) {
+      var t = e.target.closest('[data-disc]'); if (!t) return;
+      var c = cart.filter(function (x) { return x.pid === t.dataset.disc; })[0];
+      if (c) { c.disc = t.value === '' ? 0 : Number(t.value); renderCart(); }
+    });
+    $('shift-bar').addEventListener('click', function (e) {
+      var t = e.target.closest('button'); if (!t) return;
+      if (t.id === 'sh-open') { $('of').reset(); $('o-err').textContent = ''; $('odlg').showModal(); }
+      if (t.id === 'sh-close') openCloseShift();
+    });
+    $('o-cancel').onclick = function () { $('odlg').close(); };
+    $('of').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var r = S.openShift(e.target.elements.openCash.value);
+      if (!r.ok) { $('o-err').textContent = r.error; return; }
+      $('odlg').close(); toast('เปิดรอบขายแล้ว'); renderSell();
+    });
+    $('x-cancel').onclick = function () { $('xdlg').close(); };
+    $('xf').elements.counted.addEventListener('input', refreshCloseShift);
+    $('xf').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var f = e.target.elements, r = S.closeShift(f.counted.value, f.note.value);
+      if (!r.ok) { $('x-err').textContent = r.error; return; }
+      $('xdlg').close();
+      toast('ปิดรอบขายแล้ว ส่วนต่าง ' + (r.shift.diff > 0 ? '+' : '') + baht(r.shift.diff));
+      selDate = r.shift.date; renderSell();
+    });
+
+    $('cf').addEventListener('input', refreshCheckout);
+    $('cf').addEventListener('change', refreshCheckout);
+    $('c-quick').addEventListener('click', function (e) {
+      var b = e.target.closest('[data-recv]'); if (!b) return;
+      $('cf').elements.received.value = b.dataset.recv; refreshCheckout();
+    });
+    $('c-cancel').onclick = function () { $('cdlg').close(); };
+    $('cf').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var v = cfValues();
+      var r = S.checkout(cart, { bill: v.bill, payment: { method: v.method, received: v.received } });
+      if (!r.ok) { $('c-err').textContent = r.error; return; }
+      cart = []; $('cdlg').close();
+      toast('บันทึกการขาย ฿' + baht(r.sale.total));
+      selDate = r.sale.date; renderSell(); showReceipt(r.sale.id);
+    });
+    $('r-close').onclick = function () { $('rdlg').close(); };
+    $('r-print').onclick = printReceipt;
+    $('bills').addEventListener('click', function (e) {
+      var b = e.target.closest('[data-reprint]'); if (b) showReceipt(b.dataset.reprint);
+    });
+
+    $('st-search').oninput = renderStock;
+    $('st-list').addEventListener('click', function (e) {
+      var b = e.target.closest('[data-mv]'); if (b) openStockForm(b.dataset.pid, b.dataset.mv);
+    });
+    $('st-csv').onclick = function () { download('stock-moves.csv', S.stockMovesCSV(), 'text/csv;charset=utf-8'); };
+    $('x-csv-moves').onclick = $('st-csv').onclick;
+    $('s-cancel').onclick = function () { $('sdlg').close(); };
+    $('sf').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var f = e.target.elements;
+      var r = S.addStockMove(stockPid, { type: stockType, qty: f.qty.value, counted: f.counted.value, reason: f.reason.value, note: f.note.value });
+      if (!r.ok) { $('s-err').textContent = r.error; return; }
+      $('sdlg').close(); toast('บันทึกรายการสต็อกแล้ว'); renderStock();
+    });
+
+    $('shf').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var f = e.target.elements;
+      S.saveSettings({ shopName: f.shopName.value, taxId: f.taxId.value, footer: f.footer.value, receiptWidth: f.receiptWidth.value });
+      renderSettings(); toast('บันทึกข้อมูลร้านแล้ว');
     });
 
     $('p-search').oninput = renderProducts;

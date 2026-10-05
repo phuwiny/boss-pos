@@ -83,8 +83,8 @@ test('voidSale: สินค้าถูกลบไปแล้วไม่ท�
 test('summary: รายได้ กำไร ไม่นับบิลที่ยกเลิก', () => {
   S.saveProduct(prod({ price: 10, cost: 6, stock: 20 }));
   const when = S.at('2026-05-10', 10, 15);
-  S.checkout([{ pid: pid('T1'), qty: 3 }], when);
-  const b = S.checkout([{ pid: pid('T1'), qty: 2 }], when).sale;
+  S.checkout([{ pid: pid('T1'), qty: 3 }], { when: when });
+  const b = S.checkout([{ pid: pid('T1'), qty: 2 }], { when: when }).sale;
   S.voidSale(b.id, 'x');
   const r = S.summary('2026-05-10');
   assert.deepEqual([r.revenue, r.bills, r.units, r.profit, r.avg], [30, 1, 3, 12, 30]);
@@ -93,8 +93,8 @@ test('summary: รายได้ กำไร ไม่นับบิลที
 
 test('hourly: จัดชั่วโมงตามเวลาร้าน และรองรับ 24 ชั่วโมง', () => {
   S.saveProduct(prod({ stock: 50 }));
-  S.checkout([{ pid: pid('T1'), qty: 1 }], S.at('2026-05-10', 0, 5));
-  S.checkout([{ pid: pid('T1'), qty: 2 }], S.at('2026-05-10', 23, 59));
+  S.checkout([{ pid: pid('T1'), qty: 1 }], { when: S.at('2026-05-10', 0, 5) });
+  S.checkout([{ pid: pid('T1'), qty: 2 }], { when: S.at('2026-05-10', 23, 59) });
   const h = S.hourly('2026-05-10');
   assert.equal(h.length, 24);
   assert.equal(h[0], 10);
@@ -104,7 +104,7 @@ test('hourly: จัดชั่วโมงตามเวลาร้าน �
 test('top และ lastDays', () => {
   S.saveProduct(prod({ sku: 'A', price: 10, stock: 50 })); S.saveProduct(prod({ sku: 'B', price: 100, stock: 50 }));
   const when = S.at('2026-05-10', 9, 0);
-  S.checkout([{ pid: pid('A'), qty: 5 }, { pid: pid('B'), qty: 1 }], when);
+  S.checkout([{ pid: pid('A'), qty: 5 }, { pid: pid('B'), qty: 1 }], { when: when });
   const top = S.top('2026-05-10', 5);
   assert.equal(top[0].name, 'ทดสอบ');
   assert.equal(top[0].revenue, 100);
@@ -129,7 +129,7 @@ test('CSV ส่งออก: BOM, escape เครื่องหมายค�
 
 test('salesCSV มีเหตุผลยกเลิกและเวลาตามเขตเวลาร้าน', () => {
   S.saveProduct(prod({ stock: 5 }));
-  const sale = S.checkout([{ pid: pid('T1'), qty: 1 }], S.at('2026-05-10', 8, 5)).sale;
+  const sale = S.checkout([{ pid: pid('T1'), qty: 1 }], { when: S.at('2026-05-10', 8, 5) }).sale;
   S.voidSale(sale.id, 'ทดสอบ');
   const csv = S.salesCSV();
   assert.ok(csv.includes('"08:05"'));

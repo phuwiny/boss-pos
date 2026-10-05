@@ -23,6 +23,8 @@
     <div class="kpis" id="kpis"></div>
     <div class="card"><h2>ยอดขายรายชั่วโมง</h2><div id="hourly" class="bars"></div></div>
     <div class="card"><h2>ยอดขาย 7 วันล่าสุด</h2><div id="week" class="bars"></div></div>
+    <div class="card"><h2>วิธีชำระเงิน</h2><div id="pay"></div></div>
+    <div class="card"><h2>รอบขาย</h2><div id="shifts"></div></div>
     <div class="card"><h2>สินค้าขายดี</h2><div id="top"></div></div>
     <div class="card"><h2>รายการบิล</h2><div id="bills"></div></div>
     <div class="card" id="lowcard"><h2>สินค้าใกล้หมด</h2><div id="low"></div></div>
@@ -30,7 +32,8 @@
 
   <!-- ขายสินค้า -->
   <section id="view-sell" class="view">
-    <input type="search" id="s-search" placeholder="ค้นหาชื่อ / รหัสสินค้า (Enter = เพิ่มรายการแรก)" aria-label="ค้นหาสินค้าที่จะขาย" autocomplete="off">
+    <div class="card shiftbar" id="shift-bar"></div>
+    <input type="search" id="s-search" placeholder="ค้นหาสินค้า (Enter = เพิ่มรายการแรก)" aria-label="ค้นหาสินค้าที่จะขาย" autocomplete="off">
     <div id="s-list" class="grid"></div>
     <div class="card cart" id="cart"></div>
   </section>
@@ -45,8 +48,30 @@
     <div id="p-list"></div>
   </section>
 
+  <!-- สต็อก -->
+  <section id="view-stock" class="view" aria-label="สต็อกสินค้า">
+    <input type="search" id="st-search" placeholder="ค้นหาสินค้า / ประวัติ" aria-label="ค้นหาสินค้าในหน้าสต็อก" autocomplete="off">
+    <div id="st-list"></div>
+    <div class="card">
+      <div class="row"><h2>ประวัติการเคลื่อนไหวสต็อก</h2><button class="btn small" id="st-csv">ส่งออก CSV</button></div>
+      <div id="st-moves"></div>
+    </div>
+  </section>
+
   <!-- ตั้งค่า -->
   <section id="view-settings" class="view">
+    <div class="card">
+      <h2>ข้อมูลร้าน / ใบเสร็จ</h2>
+      <form id="shf">
+        <label>ชื่อร้าน<input name="shopName" maxlength="60"></label>
+        <label>เลขประจำตัวผู้เสียภาษี (ถ้ามี)<input name="taxId" maxlength="20" inputmode="numeric"></label>
+        <label>ข้อความท้ายใบเสร็จ<input name="footer" maxlength="120"></label>
+        <label>ขนาดกระดาษใบเสร็จ
+          <select name="receiptWidth"><option value="80">80 มม.</option><option value="58">58 มม.</option></select>
+        </label>
+        <button type="submit" class="btn primary">บันทึกข้อมูลร้าน</button>
+      </form>
+    </div>
     <div class="card">
       <h2>ข้อมูล</h2>
       <p class="muted">ข้อมูลเก็บในเบราว์เซอร์ของเครื่องนี้ (localStorage) ควรสำรองไฟล์เป็นระยะ</p>
@@ -56,6 +81,7 @@
         <input type="file" id="x-import" accept="application/json" hidden>
         <button class="btn" id="x-csv-sales">ส่งออกยอดขาย (CSV)</button>
         <button class="btn" id="x-csv-prod">ส่งออกสินค้า (CSV)</button>
+        <button class="btn" id="x-csv-moves">ส่งออกประวัติสต็อก (CSV)</button>
         <button class="btn" id="x-csv-import-btn">นำเข้าสินค้า (CSV)</button>
         <input type="file" id="x-csv-import" accept=".csv,text/csv" hidden>
         <button class="btn" id="x-csv-tpl">ดาวน์โหลดไฟล์ตัวอย่างสำหรับนำเข้า</button>
@@ -69,6 +95,7 @@
   <button data-view="dashboard" class="on">ยอดขาย</button>
   <button data-view="sell">ขาย</button>
   <button data-view="products">สินค้า</button>
+  <button data-view="stock">สต็อก</button>
   <button data-view="settings">ตั้งค่า</button>
 </nav>
 
@@ -119,6 +146,88 @@
   </div>
 </dialog>
 
+<dialog id="cdlg" aria-labelledby="c-title">
+  <form method="dialog" id="cf">
+    <h2 id="c-title">ชำระเงิน</h2>
+    <div id="c-sum"></div>
+    <div class="row">
+      <label>ส่วนลดท้ายบิล<input name="bdisc" type="number" min="0" step="0.01" inputmode="decimal"></label>
+      <label>หน่วย<select name="btype"><option value="baht">บาท</option><option value="pct">%</option></select></label>
+    </div>
+    <fieldset class="pay">
+      <legend>วิธีชำระเงิน</legend>
+      <label class="radio"><input type="radio" name="method" value="cash" checked> เงินสด</label>
+      <label class="radio"><input type="radio" name="method" value="transfer"> โอน</label>
+      <label class="radio"><input type="radio" name="method" value="qr"> QR</label>
+    </fieldset>
+    <div id="c-cash">
+      <label>รับเงินมา (เว้นว่าง = พอดี)<input name="received" type="number" min="0" step="0.01" inputmode="decimal"></label>
+      <div class="quick" id="c-quick"></div>
+      <div class="total"><span>เงินทอน</span><span id="c-change">฿0</span></div>
+    </div>
+    <p class="err" id="c-err" role="alert"></p>
+    <div class="row end">
+      <button type="button" class="btn" id="c-cancel">กลับไปแก้ตะกร้า</button>
+      <button type="submit" class="btn primary" id="c-ok">ยืนยันชำระเงิน</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="rdlg" aria-labelledby="r-title">
+  <h2 id="r-title">ใบเสร็จ</h2>
+  <div id="r-body" class="rc-wrap"></div>
+  <div class="row end">
+    <button type="button" class="btn" id="r-close">ปิด</button>
+    <button type="button" class="btn primary" id="r-print">พิมพ์ใบเสร็จ</button>
+  </div>
+</dialog>
+
+<dialog id="odlg" aria-labelledby="o-title">
+  <form method="dialog" id="of">
+    <h2 id="o-title">เปิดรอบขาย</h2>
+    <label>เงินทอนตั้งต้นในลิ้นชัก (บาท)<input name="openCash" type="number" min="0" step="0.01" inputmode="decimal" value="0" required></label>
+    <p class="err" id="o-err" role="alert"></p>
+    <div class="row end">
+      <button type="button" class="btn" id="o-cancel">ยกเลิก</button>
+      <button type="submit" class="btn primary">เปิดรอบขาย</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="xdlg" aria-labelledby="x-title">
+  <form method="dialog" id="xf">
+    <h2 id="x-title">ปิดรอบขาย</h2>
+    <div id="x-sum"></div>
+    <label>นับเงินสดในลิ้นชักได้ (บาท)<input name="counted" type="number" min="0" step="0.01" inputmode="decimal" required></label>
+    <div class="total"><span>ส่วนต่าง</span><span id="x-diff">–</span></div>
+    <label>หมายเหตุ<input name="note" maxlength="200"></label>
+    <p class="err" id="x-err" role="alert"></p>
+    <div class="row end">
+      <button type="button" class="btn" id="x-cancel">ยกเลิก</button>
+      <button type="submit" class="btn primary">ปิดรอบขาย</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="sdlg" aria-labelledby="s-title">
+  <form method="dialog" id="sf">
+    <h2 id="s-title">รับสินค้าเข้า</h2>
+    <p class="muted" id="s-prod"></p>
+    <label id="s-qty-l">จำนวน<input name="qty" type="number" min="1" step="1" inputmode="numeric"></label>
+    <label id="s-counted-l">ยอดที่นับได้จริง<input name="counted" type="number" min="0" step="1" inputmode="numeric"></label>
+    <label>สาเหตุ<input name="reason" maxlength="100" list="reasons" autocomplete="off"></label>
+    <datalist id="reasons"></datalist>
+    <label>หมายเหตุ (เช่น เลขที่ใบส่งของ)<input name="note" maxlength="200" autocomplete="off"></label>
+    <p class="err" id="s-err" role="alert"></p>
+    <div class="row end">
+      <button type="button" class="btn" id="s-cancel">ยกเลิก</button>
+      <button type="submit" class="btn primary">บันทึก</button>
+    </div>
+  </form>
+</dialog>
+
+<div id="receipt-print" aria-hidden="true"></div>
+<style id="print-page"></style>
 <div id="toast" role="status" aria-live="polite"></div>
 <script src="js/store.js"></script>
 <script src="js/app.js"></script>
